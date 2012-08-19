@@ -1,7 +1,7 @@
 main: Doggyroc.Prefixed
 name: Prefixed
 author: Doggyroc
-version: 0.1
+version: 1.1
 depend: [PermissionsEx]
 permissions:
     Prefixed.colour:

@@ -12,15 +12,16 @@ public class Prefixed extends JavaPlugin {
 		PluginManager PluginM = getServer().getPluginManager();
 		
 		if(!PluginM.isPluginEnabled("PermissionsEx")){
-			System.out.print(" Plugin needs PermissionsEx to run!");
+			System.out.print("[Prefixed] This plugin needs PermissionsEx to run!");
 			PluginM.disablePlugin(this);
 			return;
 		}else{
-			PluginM.registerEvents(new ChatListener(), this);
+			PluginM.registerEvents(new ChatListener(this), this);
 			System.out.print("[Prefixed] Enabled!");
+			getConfig().options().copyDefaults(true);
+			saveConfig();
 		}
 	}
-	
 	public void onDisable(){
 		System.out.print("[Prefixed] Disabled!");
 	}
