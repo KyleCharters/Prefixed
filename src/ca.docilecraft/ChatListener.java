@@ -1,4 +1,4 @@
-package Doggyroc;
+package ca.docilecraft;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
