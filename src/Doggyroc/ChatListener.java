@@ -36,6 +36,6 @@ public class ChatListener implements Listener {
 		
 //Formatting
 		
-		e.setFormat(plugin.getConfig().getString("format").replaceAll("-Prefix", prefix).replaceAll("-Suffix", suffix).replaceAll("-Player", player).replaceAll("-Message", message).replaceAll("%", "%%").replaceAll("(&([a-fl-o0-9A-FL-O]))", "\247$2"));
+		e.setFormat(plugin.getConfig().getString("format").replaceAll("-Prefix", prefix).replaceAll("-Suffix", suffix).replaceAll("-Player", player).replaceAll("(&([a-fl-o0-9A-FL-O]))", "\247$2").replaceAll("-Message", message));
 	}
 }
