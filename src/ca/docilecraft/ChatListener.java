@@ -72,11 +72,11 @@ public class ChatListener implements Listener {
 	
 	
 	public boolean permission(Player player, String permission){
-		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
-			boolean haspermission = Prefixed.permission.has(player, permission);
-			return haspermission;
-		}else if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+		if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
 			boolean haspermission = PermissionsEx.getPermissionManager().getUser(player).has(permission);
+			return haspermission;
+		}else if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
+			boolean haspermission = Prefixed.permission.has(player, permission);
 			return haspermission;
 		}
 		return false;
