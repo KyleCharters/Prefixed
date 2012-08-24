@@ -9,10 +9,10 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class ChatListener implements Listener {
 	
-	Prefixed plugin;
+	Prefixed main;
 	
 	public ChatListener(Prefixed instance){
-		plugin = instance;
+		main = instance;
 	}
 	
 	@EventHandler
@@ -27,24 +27,24 @@ public class ChatListener implements Listener {
 		
 		if(permission(e.getPlayer(), "Prefixed.colour")){
 			message = e.getMessage().replace("%", "%%").replace("&", "§");
-		}else {
+		}else{
 			message = e.getMessage().replace("%", "%%");
 		}
 		
 //Formatting
 		
-		e.setFormat(plugin.getConfig().getString("format").replace("-Prefix", prefix(e.getPlayer().getName(), world)).replace("-Suffix", suffix(e.getPlayer().getName(), world)).replace("-Player", player).replace("&", "§").replace("-Message", message));
+		e.setFormat(main.getConfig().getString("format").replace("-Prefix", prefix(e.getPlayer().getName(), world)).replace("-Suffix", suffix(e.getPlayer().getName(), world)).replace("-Player", player).replace("&", "§").replace("-Message", message));
 	}
 	
 	
 	
 	
 	public String prefix(String player, String world){
-		if(plugin.getServer().getPluginManager().isPluginEnabled("Vault")){
+		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
 			String prefix = Prefixed.chat.getPlayerPrefix(world, player);
 			if(prefix == null) prefix = "";
 			return prefix;
-		}else if(plugin.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+		}else if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
 			String prefix = PermissionsEx.getPermissionManager().getUser(player).getPrefix(world);
 			if(prefix == null) prefix = "";
 			return prefix;
@@ -56,11 +56,11 @@ public class ChatListener implements Listener {
 	
 	
 	public String suffix(String player, String world){
-		if(plugin.getServer().getPluginManager().isPluginEnabled("Vault")){
+		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
 			String suffix = Prefixed.chat.getPlayerSuffix(world, player);
 			if(suffix == null) suffix = "";
 			return suffix;
-		}else if(plugin.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+		}else if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
 			String suffix = PermissionsEx.getPermissionManager().getUser(player).getSuffix(world);
 			if(suffix == null) suffix = "";
 			return suffix;
@@ -72,10 +72,10 @@ public class ChatListener implements Listener {
 	
 	
 	public boolean permission(Player player, String permission){
-		if(plugin.getServer().getPluginManager().isPluginEnabled("Vault")){
+		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
 			boolean haspermission = Prefixed.permission.has(player, permission);
 			return haspermission;
-		}else if(plugin.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+		}else if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
 			boolean haspermission = PermissionsEx.getPermissionManager().getUser(player).has(permission);
 			return haspermission;
 		}
