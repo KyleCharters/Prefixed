@@ -17,20 +17,20 @@ public class Prefixed extends JavaPlugin {
 		
 		PluginManager PluginM = getServer().getPluginManager();
 		
-		if(PluginM.isPluginEnabled("Vault")){
+		if(PluginM.isPluginEnabled("PermissionsEx")){
+			PluginM.registerEvents(new ChatListener(this), this);
+			getConfig().options().copyDefaults(true);
+			saveConfig();
+			System.out.print(P + "Hooked Into PermissionsEx");
+			System.out.print(P + "Enabled!");
+			return;
+		}else if(PluginM.isPluginEnabled("Vault")){
 			PluginM.registerEvents(new ChatListener(this), this);
 			setupChat();
 			setupPermissions();
 			getConfig().options().copyDefaults(true);
 			saveConfig();
 			System.out.print(P + "Hooked Into Vault!");
-			System.out.print(P + "Enabled!");
-			return;
-		}else if(PluginM.isPluginEnabled("PermissionsEx")){
-			PluginM.registerEvents(new ChatListener(this), this);
-			getConfig().options().copyDefaults(true);
-			saveConfig();
-			System.out.print(P + "Hooked Into PermissionsEx");
 			System.out.print(P + "Enabled!");
 			return;
 		}else{

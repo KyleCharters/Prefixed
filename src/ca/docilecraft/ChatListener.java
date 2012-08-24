@@ -39,6 +39,19 @@ public class ChatListener implements Listener {
 	
 	
 	
+/*
+##     ## ######## ######## ##     ##  #######  ########   ######  
+###   ### ##          ##    ##     ## ##     ## ##     ## ##    ## 
+#### #### ##          ##    ##     ## ##     ## ##     ## ##       
+## ### ## ######      ##    ######### ##     ## ##     ##  ######  
+##     ## ##          ##    ##     ## ##     ## ##     ##       ## 
+##     ## ##          ##    ##     ## ##     ## ##     ## ##    ## 
+##     ## ########    ##    ##     ##  #######  ########   ######  
+ */
+	
+	
+	
+	
 	public String prefix(String player, String world){
 		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
 			String prefix = Prefixed.chat.getPlayerPrefix(world, player);
@@ -51,10 +64,7 @@ public class ChatListener implements Listener {
 		}
 		return "";
 	}
-	
-	
-	
-	
+
 	public String suffix(String player, String world){
 		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
 			String suffix = Prefixed.chat.getPlayerSuffix(world, player);
@@ -67,10 +77,7 @@ public class ChatListener implements Listener {
 		}
 		return "";
 	}
-	
-	
-	
-	
+
 	public boolean permission(Player player, String permission){
 		if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
 			boolean haspermission = PermissionsEx.getPermissionManager().getUser(player).has(permission);
@@ -81,4 +88,5 @@ public class ChatListener implements Listener {
 		}
 		return false;
 	}
+	
 }
