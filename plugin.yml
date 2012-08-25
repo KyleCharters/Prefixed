@@ -1,7 +1,7 @@
 main: ca.docilecraft.Prefixed
 name: Prefixed
 author: Doggyroc
-version: 1.4
+version: 1.5
 softdepend: [PermissionsEx, Vault]
 permissions:
     Prefixed.colour:
