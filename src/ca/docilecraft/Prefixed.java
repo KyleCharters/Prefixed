@@ -1,5 +1,7 @@
 package ca.docilecraft;
 
+import java.io.IOException;
+
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 
@@ -14,6 +16,13 @@ public class Prefixed extends JavaPlugin {
 //Startup
 	
 	public void onEnable(){
+		
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException e) {
+		    System.out.print(P + "Could not connect to Metrics!");
+		}
 		
 		PluginManager PluginM = getServer().getPluginManager();
 		
