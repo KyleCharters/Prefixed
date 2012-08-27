@@ -11,8 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Prefixed extends JavaPlugin {
 	
-	String P = "[Prefixed] ";
-	
 //Startup
 	
 	public void onEnable(){
@@ -21,7 +19,7 @@ public class Prefixed extends JavaPlugin {
 		    Metrics metrics = new Metrics(this);
 		    metrics.start();
 		} catch (IOException e) {
-		    System.out.print(P + "Could not connect to Metrics!");
+		    getLogger().warning("Could not connect to Metrics!");
 		}
 		
 		PluginManager PluginM = getServer().getPluginManager();
@@ -30,8 +28,8 @@ public class Prefixed extends JavaPlugin {
 			PluginM.registerEvents(new ChatListener(this), this);
 			getConfig().options().copyDefaults(true);
 			saveConfig();
-			System.out.print(P + "Hooked Into PermissionsEx");
-			System.out.print(P + "Enabled!");
+			getLogger().info("Hooked Into PermissionsEx");
+			getLogger().info("Enabled!");
 			return;
 		}else if(PluginM.isPluginEnabled("Vault")){
 			PluginM.registerEvents(new ChatListener(this), this);
@@ -39,17 +37,17 @@ public class Prefixed extends JavaPlugin {
 			setupPermissions();
 			getConfig().options().copyDefaults(true);
 			saveConfig();
-			System.out.print(P + "Hooked Into Vault!");
-			System.out.print(P + "Enabled!");
+			getLogger().info("Hooked Into Vault!");
+			getLogger().info("Enabled!");
 			return;
 		}else{
-			System.out.print(P + "This plugin needs Vault or PermissionsEx to run!");
+			getLogger().severe("This plugin needs Vault or PermissionsEx to run!");
 			PluginM.disablePlugin(this);
 			return;
 		}
 	}
 	public void onDisable(){
-		System.out.print(P + "Disabled!");
+		getLogger().info("Disabled!");
 	}
 	
 	public static Permission permission = null;
