@@ -53,12 +53,12 @@ public class ChatListener implements Listener {
 	
 	
 	public String prefix(String player, String world){
-		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
-			String prefix = Prefixed.chat.getPlayerPrefix(world, player);
+		if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+			String prefix = PermissionsEx.getPermissionManager().getUser(player).getPrefix(world);
 			if(prefix == null) prefix = "";
 			return prefix;
-		}else if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
-			String prefix = PermissionsEx.getPermissionManager().getUser(player).getPrefix(world);
+		}else if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
+			String prefix = Prefixed.chat.getPlayerPrefix(world, player);
 			if(prefix == null) prefix = "";
 			return prefix;
 		}
@@ -66,12 +66,12 @@ public class ChatListener implements Listener {
 	}
 
 	public String suffix(String player, String world){
-		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
-			String suffix = Prefixed.chat.getPlayerSuffix(world, player);
+		if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+			String suffix = PermissionsEx.getPermissionManager().getUser(player).getSuffix(world);
 			if(suffix == null) suffix = "";
 			return suffix;
-		}else if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
-			String suffix = PermissionsEx.getPermissionManager().getUser(player).getSuffix(world);
+		}else if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
+			String suffix = Prefixed.chat.getPlayerSuffix(world, player);
 			if(suffix == null) suffix = "";
 			return suffix;
 		}
