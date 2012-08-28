@@ -1,11 +1,8 @@
 package ca.docilecraft;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class ChatListener implements Listener {
 	
@@ -25,7 +22,7 @@ public class ChatListener implements Listener {
 
 //If Statements
 		
-		if(hasPerm(e.getPlayer(), "Prefixed.colour")){
+		if(e.getPlayer().hasPermission("Prefixed.colour")){
 			message = e.getMessage().replace("%", "%%").replace("&", "§");
 		}else{
 			message = e.getMessage().replace("%", "%%");
@@ -53,11 +50,7 @@ public class ChatListener implements Listener {
 	
 	
 	public String prefix(String player, String world){
-		if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
-			String prefix = PermissionsEx.getPermissionManager().getUser(player).getPrefix(world);
-			if(prefix == null) prefix = "";
-			return prefix;
-		}else if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
+		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
 			String prefix = Prefixed.chat.getPlayerPrefix(world, player);
 			if(prefix == null) prefix = "";
 			return prefix;
@@ -66,11 +59,7 @@ public class ChatListener implements Listener {
 	}
 
 	public String suffix(String player, String world){
-		if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
-			String suffix = PermissionsEx.getPermissionManager().getUser(player).getSuffix(world);
-			if(suffix == null) suffix = "";
-			return suffix;
-		}else if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
+		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
 			String suffix = Prefixed.chat.getPlayerSuffix(world, player);
 			if(suffix == null) suffix = "";
 			return suffix;
@@ -78,17 +67,4 @@ public class ChatListener implements Listener {
 		return "";
 	}
 
-	public boolean hasPerm(Player player, String permission){
-		if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
-			boolean hasPermission = PermissionsEx.getPermissionManager().getUser(player).has(permission);
-			return hasPermission;
-		}else if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
-			boolean hasPermission = Prefixed.permission.has(player, permission);
-			return hasPermission;
-		}else if(player.isOp()){
-			return true;
-		}
-		return false;
-	}
-	
 }
