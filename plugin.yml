@@ -1,8 +1,8 @@
 main: ca.docilecraft.Prefixed
 name: Prefixed
 author: Doggyroc
-version: 1.7
-softdepend: [PermissionsEx, Vault, TagAPI]
+version: 1.8
+softdepend: [Vault, TagAPI]
 permissions:
     Prefixed.colour:
         description: Allows talking in colour.
