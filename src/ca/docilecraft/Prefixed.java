@@ -3,7 +3,6 @@ package ca.docilecraft;
 import java.io.IOException;
 
 import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -24,25 +23,20 @@ public class Prefixed extends JavaPlugin {
 		
 		PluginManager PluginM = getServer().getPluginManager();
 		
-		if(PluginM.isPluginEnabled("PermissionsEx")){
-			PluginM.registerEvents(new ChatListener(this), this);
-			getConfig().options().copyDefaults(true);
-			saveConfig();
-			log(0, "Hooked Into PermissionsEx");
-		}else if(PluginM.isPluginEnabled("Vault")){
+		if(PluginM.isPluginEnabled("Vault")){
 			PluginM.registerEvents(new ChatListener(this), this);
 			setupChat();
-			setupPermissions();
 			getConfig().options().copyDefaults(true);
 			saveConfig();
 			log(0, "Hooked Into Vault!");
 		}else{
-			log(2, "This plugin needs Vault or PermissionsEx to run!");
+			log(2, "This plugin needs Vault to run!");
+			log(2, "Download Vault at http://dev.bukkit.org/server-mods/Vault");
 			PluginM.disablePlugin(this);
 			return;
 		}
 		
-		if(PluginM.isPluginEnabled("TagAPI") && (getConfig().getBoolean("usenametag") == true)){
+		if(PluginM.isPluginEnabled("TagAPI") && getConfig().getBoolean("usenametag")){
 			PluginM.registerEvents(new TagListener(this), this);
 			log(0, "Hooked into TagAPI!");
 		}
@@ -54,7 +48,6 @@ public class Prefixed extends JavaPlugin {
 		log(0, "Disabled!");
 	}
 	
-	public static Permission permission = null;
 	public static Chat chat = null;
 	
     private boolean setupChat(){
@@ -64,14 +57,6 @@ public class Prefixed extends JavaPlugin {
         }
 
         return (chat != null);
-    }
-    
-    private boolean setupPermissions(){
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null){
-            permission = permissionProvider.getProvider();
-        }
-        return (permission != null);
     }
     
 	public void log(int level, String out){
