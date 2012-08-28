@@ -19,7 +19,7 @@ public class Prefixed extends JavaPlugin {
 		    Metrics metrics = new Metrics(this);
 		    metrics.start();
 		} catch (IOException e) {
-		    getLogger().warning("Could not connect to Metrics!");
+		    log(1, "Could not connect to Metrics!");
 		}
 		
 		PluginManager PluginM = getServer().getPluginManager();
@@ -28,26 +28,30 @@ public class Prefixed extends JavaPlugin {
 			PluginM.registerEvents(new ChatListener(this), this);
 			getConfig().options().copyDefaults(true);
 			saveConfig();
-			getLogger().info("Hooked Into PermissionsEx");
-			getLogger().info("Enabled!");
-			return;
+			log(0, "Hooked Into PermissionsEx");
 		}else if(PluginM.isPluginEnabled("Vault")){
 			PluginM.registerEvents(new ChatListener(this), this);
 			setupChat();
 			setupPermissions();
 			getConfig().options().copyDefaults(true);
 			saveConfig();
-			getLogger().info("Hooked Into Vault!");
-			getLogger().info("Enabled!");
-			return;
+			log(0, "Hooked Into Vault!");
 		}else{
-			getLogger().severe("This plugin needs Vault or PermissionsEx to run!");
+			log(2, "This plugin needs Vault or PermissionsEx to run!");
 			PluginM.disablePlugin(this);
 			return;
 		}
+		
+		if(PluginM.isPluginEnabled("TagAPI") && (getConfig().getBoolean("usenametag") == true)){
+			PluginM.registerEvents(new TagListener(this), this);
+			log(0, "Hooked into TagAPI!");
+		}
+		
+		log(0, "Enabled!");
 	}
+	
 	public void onDisable(){
-		getLogger().info("Disabled!");
+		log(0, "Disabled!");
 	}
 	
 	public static Permission permission = null;
@@ -69,4 +73,16 @@ public class Prefixed extends JavaPlugin {
         }
         return (permission != null);
     }
+    
+	public void log(int level, String out){
+		if(level == 0){
+			getLogger().info(out);
+		}
+		if(level == 1){
+			getLogger().warning(out);
+		}
+		if(level == 2){
+			getLogger().severe(out);
+		}
+	}
 }

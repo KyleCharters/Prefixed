@@ -25,7 +25,7 @@ public class ChatListener implements Listener {
 
 //If Statements
 		
-		if(permission(e.getPlayer(), "Prefixed.colour")){
+		if(hasPerm(e.getPlayer(), "Prefixed.colour")){
 			message = e.getMessage().replace("%", "%%").replace("&", "§");
 		}else{
 			message = e.getMessage().replace("%", "%%");
@@ -78,13 +78,15 @@ public class ChatListener implements Listener {
 		return "";
 	}
 
-	public boolean permission(Player player, String permission){
+	public boolean hasPerm(Player player, String permission){
 		if(main.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
-			boolean haspermission = PermissionsEx.getPermissionManager().getUser(player).has(permission);
-			return haspermission;
+			boolean hasPermission = PermissionsEx.getPermissionManager().getUser(player).has(permission);
+			return hasPermission;
 		}else if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
-			boolean haspermission = Prefixed.permission.has(player, permission);
-			return haspermission;
+			boolean hasPermission = Prefixed.permission.has(player, permission);
+			return hasPermission;
+		}else if(player.isOp()){
+			return true;
 		}
 		return false;
 	}

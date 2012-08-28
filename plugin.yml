@@ -1,9 +1,49 @@
 main: ca.docilecraft.Prefixed
 name: Prefixed
 author: Doggyroc
-version: 1.6
-softdepend: [PermissionsEx, Vault]
+version: 1.7
+softdepend: [PermissionsEx, Vault, TagAPI]
 permissions:
     Prefixed.colour:
         description: Allows talking in colour.
-        dafault: op
+        default: op
+    Prefixed.TAG.BLACK:
+        default: false
+    Prefixed.TAG.DBLUE:
+        default: false
+    Prefixed.TAG.DGREEN:
+        default: false
+    Prefixed.TAG.DAQUA:
+        default: false
+    Prefixed.TAG.DRED:
+        default: false
+    Prefixed.TAG.PURPLE:
+        default: false
+    Prefixed.TAG.GOLD:
+        default: false
+    Prefixed.TAG.GREY:
+        default: false
+    Prefixed.TAG.DGREY:
+        default: false
+    Prefixed.TAG.INDIGO:
+        default: false
+    Prefixed.TAG.BGREEN:
+        default: false
+    Prefixed.TAG.AQUA:
+        default: false
+    Prefixed.TAG.RED:
+        default: false
+    Prefixed.TAG.PINK:
+        default: false
+    Prefixed.TAG.YELLOW:
+        default: false
+    Prefixed.TAG.RANDOM:
+        default: false
+    Prefixed.TAG.BOLD:
+        default: false
+    Prefixed.TAG.STRIKE:
+        default: false
+    Prefixed.TAG.UNDERLINE:
+        default: false
+    Prefixed.TAG.ITALIC:
+        default: false
