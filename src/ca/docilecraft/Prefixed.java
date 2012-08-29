@@ -36,7 +36,11 @@ public class Prefixed extends JavaPlugin {
 			return;
 		}
 		
-		if(PluginM.isPluginEnabled("TagAPI") && getConfig().getBoolean("usenametag")){
+		if(getConfig().getBoolean("useTabList")){
+			PluginM.registerEvents(new TabListener(this), this);
+		}
+		
+		if(PluginM.isPluginEnabled("TagAPI") && getConfig().getBoolean("useNameTag")){
 			PluginM.registerEvents(new TagListener(this), this);
 			log(0, "Hooked into TagAPI!");
 		}

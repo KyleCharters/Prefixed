@@ -2,22 +2,35 @@ package ca.docilecraft;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.kitteh.tag.PlayerReceiveNameTagEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
-public class TagListener implements Listener{
+public class TabListener implements Listener{
 	
 	Prefixed main;
 	
-	public TagListener(Prefixed instance){
+	public TabListener(Prefixed instance){
 		main = instance;
 	}
 	
-	@EventHandler
-	public void onPlayerReciveNameTag(PlayerReceiveNameTagEvent event){
-		if(main.getConfig().getBoolean("usenametag") == true){
-			Player player = event.getNamedPlayer();
-			event.setTag(colour(player) + player.getName());
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerJoin(PlayerJoinEvent event){
+		Player player = event.getPlayer();
+		if((colour(player) + player.getName() + "§f").length() > 14){
+			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
+		}else{
+			player.setPlayerListName(colour(player) + player.getName() + "§f");
+		}
+	}
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayer(AsyncPlayerChatEvent event){
+		Player player = event.getPlayer();
+		if((colour(player) + player.getName() + "§f").length() > 14){
+			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
+		}else{
+			player.setPlayerListName(colour(player) + player.getName() + "§f");
 		}
 	}
 	
@@ -49,5 +62,4 @@ public class TagListener implements Listener{
 		if(player.hasPermission(N+"ITALIC"))ret = ret + "§0";
 		return ret;
 	}
-	
 }
