@@ -14,9 +14,9 @@ public class TagListener implements Listener{
 	}
 	
 	@EventHandler
-	public void onPlayerReciveNameTag(PlayerReceiveNameTagEvent event){
-		Player player = event.getNamedPlayer();
-		event.setTag(colour(player) + player.getName());
+	public void onPlayerReciveNameTag(PlayerReceiveNameTagEvent e){
+		Player player = e.getNamedPlayer();
+		e.setTag(colour(player) + player.getName());
 	}
 	
 	public String colour(Player player){

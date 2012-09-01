@@ -40,6 +40,10 @@ public class Prefixed extends JavaPlugin {
 			PluginM.registerEvents(new TabListener(this), this);
 		}
 		
+		if(getConfig().getBoolean("useSpam")){
+			PluginM.registerEvents(new SpamListener(this), this);
+		}
+		
 		if(PluginM.isPluginEnabled("TagAPI") && getConfig().getBoolean("useNameTag")){
 			PluginM.registerEvents(new TagListener(this), this);
 			log(0, "Hooked into TagAPI!");
