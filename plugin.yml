@@ -1,7 +1,8 @@
 main: ca.docilecraft.Prefixed
 name: Prefixed
 author: Doggyroc
-version: 1.9
+website: http://dev.bukkit.org/server-mods/prefixed/
+version: 1.10
 softdepend: [Vault, TagAPI]
 permissions:
     Prefixed.colour:

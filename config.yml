@@ -1,3 +1,10 @@
 format: '-Prefix-Player-Suffix: -Message'
 useNameTag: true
 useTabList: true
+useSpam: true
+useSpamRepeatMessage: true
+timeConsideredSpam: 4
+warningsForSpam: 3
+muteTime: 30
+timesRepeatSpam: 3
+repeatExpire: 8

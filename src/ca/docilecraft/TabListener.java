@@ -16,8 +16,8 @@ public class TabListener implements Listener{
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerJoin(PlayerJoinEvent event){
-		Player player = event.getPlayer();
+	public void onPlayerJoin(PlayerJoinEvent e){
+		Player player = e.getPlayer();
 		if((colour(player) + player.getName() + "§f").length() > 14){
 			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
 		}else{
@@ -25,8 +25,8 @@ public class TabListener implements Listener{
 		}
 	}
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayer(AsyncPlayerChatEvent event){
-		Player player = event.getPlayer();
+	public void onPlayer(AsyncPlayerChatEvent e){
+		Player player = e.getPlayer();
 		if((colour(player) + player.getName() + "§f").length() > 14){
 			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
 		}else{
