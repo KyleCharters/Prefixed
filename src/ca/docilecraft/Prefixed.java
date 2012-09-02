@@ -40,7 +40,7 @@ public class Prefixed extends JavaPlugin {
 			PluginM.registerEvents(new TabListener(this), this);
 		}
 		
-		if(getConfig().getBoolean("useSpam")){
+		if(getConfig().getBoolean("Spam.useSpam")){
 			PluginM.registerEvents(new SpamListener(this), this);
 		}
 		
@@ -68,14 +68,8 @@ public class Prefixed extends JavaPlugin {
     }
     
 	public void log(int level, String out){
-		if(level == 0){
-			getLogger().info(out);
-		}
-		if(level == 1){
-			getLogger().warning(out);
-		}
-		if(level == 2){
-			getLogger().severe(out);
-		}
+		if(level == 0) getLogger().info(out);
+		if(level == 1) getLogger().warning(out);
+		if(level == 2) getLogger().severe(out);
 	}
 }
