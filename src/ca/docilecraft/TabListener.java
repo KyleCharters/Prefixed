@@ -18,7 +18,7 @@ public class TabListener implements Listener{
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent e){
 		Player player = e.getPlayer();
-		if((colour(player) + player.getName() + "§f").length() > 14){
+		if((colour(player) + player.getName() + "§f").length() > 16){
 			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
 		}else{
 			player.setPlayerListName(colour(player) + player.getName() + "§f");
