@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class TabListener implements Listener{
@@ -19,15 +18,6 @@ public class TabListener implements Listener{
 	public void onPlayerJoin(PlayerJoinEvent e){
 		Player player = e.getPlayer();
 		if((colour(player) + player.getName() + "§f").length() > 16){
-			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
-		}else{
-			player.setPlayerListName(colour(player) + player.getName() + "§f");
-		}
-	}
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayer(AsyncPlayerChatEvent e){
-		Player player = e.getPlayer();
-		if((colour(player) + player.getName() + "§f").length() > 14){
 			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
 		}else{
 			player.setPlayerListName(colour(player) + player.getName() + "§f");
