@@ -3,8 +3,3 @@ useMultiple: true
 useDisplayName: true
 useNameTag: true
 useTabList: true
-Spam:
-  useSpam: true
-  timeConsideredSpam: 4
-  warningsForSpam: 3
-  muteTime: 30
