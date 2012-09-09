@@ -1,4 +1,5 @@
 format: '[-World]-Prefix-Player-Suffix: -Message'
+useMultiple: true
 useDisplayName: true
 useNameTag: true
 useTabList: true

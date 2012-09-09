@@ -1,5 +1,7 @@
 package ca.docilecraft;
 
+import net.milkbowl.vault.chat.Chat;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,7 +33,7 @@ public class ChatListener implements Listener {
 		
 //Formatting
 		
-		e.setFormat(main.getConfig().getString("format").replace("-Prefix", prefix(e.getPlayer().getName(), world)).replace("-Suffix", suffix(e.getPlayer().getName(), world)).replace("-Player", player).replace("-World", e.getPlayer().getWorld().getName()).replace("&", "§").replace("-Message", message));
+		e.setFormat(main.getConfig().getString("format").replace("-Prefix", prefix(e.getPlayer())).replace("-Suffix", suffix(e.getPlayer())).replace("-Player", player).replace("-World", world).replace("&", "§").replace("-Message", message));
 	}
 	
 	
@@ -50,19 +52,43 @@ public class ChatListener implements Listener {
 	
 	
 	
-	public String prefix(String player, String world){
+	public String prefix(Player player){
 		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
-			String prefix = Prefixed.chat.getPlayerPrefix(world, player);
-			if(prefix == null) prefix = "";
+			Chat chat = Prefixed.chat;
+			String p = player.getName();
+			String prefix = chat.getPlayerPrefix(player.getWorld(), p)+"§f";
+			if(!main.getConfig().getBoolean("useMultiple")){
+				//if multiple prefixes aren't enabled
+				String onlyPrefix = chat.getPlayerPrefix(player.getWorld(), p);
+				if(onlyPrefix == null) return "";
+				return onlyPrefix+"§f";
+			}
+			//Getting all prefixes
+			for(String group : chat.getPlayerGroups(player)){
+				String groupPre = chat.getGroupPrefix(player.getWorld(), group);
+				if(!prefix.contains(groupPre+"§f")) prefix += groupPre+"§f";
+			}
 			return prefix;
 		}
 		return "";
 	}
 
-	public String suffix(String player, String world){
+	public String suffix(Player player){
 		if(main.getServer().getPluginManager().isPluginEnabled("Vault")){
-			String suffix = Prefixed.chat.getPlayerSuffix(world, player);
-			if(suffix == null) suffix = "";
+			Chat chat = Prefixed.chat;
+			String p = player.getName();
+			String suffix = chat.getPlayerSuffix(player.getWorld(), p)+"§f";
+			if(!main.getConfig().getBoolean("useMultiple")){
+				//if multiple suffixes aren't enabled
+				String onlySuffix = chat.getPlayerSuffix(player.getWorld(), p);
+				if(onlySuffix == null) return "";
+				return onlySuffix+"§f";
+			}
+			//Getting all suffixes
+			for(String group : chat.getPlayerGroups(player)){
+				String groupSuf = chat.getGroupSuffix(player.getWorld(), group);
+				if(!suffix.contains(groupSuf+"§f")) suffix += groupSuf+"§f";
+			}
 			return suffix;
 		}
 		return "";
