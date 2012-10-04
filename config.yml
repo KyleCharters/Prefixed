@@ -3,3 +3,5 @@ useMultiple: true
 useDisplayName: true
 useNameTag: true
 useTabList: true
+worldTagColour: red
+chatColour: yellow
