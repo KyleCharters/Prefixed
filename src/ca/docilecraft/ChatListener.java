@@ -10,6 +10,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 
 public class ChatListener implements Listener {
+	
 	Prefixed main;
 	public ChatListener(Prefixed instance){
 		main = instance;
@@ -18,6 +19,7 @@ public class ChatListener implements Listener {
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent Chat){
 		if(Chat.isCancelled()) return;
+		
 		String message;
 		String world = Chat.getPlayer().getWorld().getName();
 		String player;
@@ -32,8 +34,8 @@ public class ChatListener implements Listener {
 		
 //Colour
 		
-		String Worldprefixcolour = worldTagColour(null);
-		String ChatColour = chatColour(null);
+		String Worldprefixcolour = worldTagColour();
+		String ChatColour = chatColour();
 		
 //Formatting
 
@@ -52,7 +54,7 @@ public class ChatListener implements Listener {
 ##     ## ##          ##    ##     ## ##     ## ##     ## ##    ## 
 ##     ## ########    ##    ##     ##  #######  ########   ######  
  */
-	public String worldTagColour(Player player){
+	public String worldTagColour(){
 		String ret = "";
 		if(main.getConfig().getString("worldTagColour").equalsIgnoreCase("Yellow"))ret = "§e";
 		if(main.getConfig().getString("worldTagColour").equalsIgnoreCase("PINK"))ret = "§d";
@@ -79,7 +81,7 @@ public class ChatListener implements Listener {
 		if(main.getConfig().getString("worldTagColour").equalsIgnoreCase("ITALIC"))ret = ret + "§0";
 		return ret;
 	}
-	public String chatColour(Player player){
+	public String chatColour(){
 		String ret = "";
 		if(main.getConfig().getString("chatColour").equalsIgnoreCase("Yellow"))ret = "§e";
 		if(main.getConfig().getString("chatColour").equalsIgnoreCase("PINK"))ret = "§d";
@@ -100,6 +102,10 @@ public class ChatListener implements Listener {
 			ret = ret + "§k";
 			return ret;
 		}
+		if(main.getConfig().getString("worldTagColour").equalsIgnoreCase("BOLD"))ret = ret + "§l";
+		if(main.getConfig().getString("worldTagColour").equalsIgnoreCase("STRIKE"))ret = ret+ "§n";
+		if(main.getConfig().getString("worldTagColour").equalsIgnoreCase("UNDERLINE"))ret = ret + "§m";
+		if(main.getConfig().getString("worldTagColour").equalsIgnoreCase("ITALIC"))ret = ret + "§0";
 		return ret;
 	}
 	
@@ -149,5 +155,4 @@ public class ChatListener implements Listener {
 		if(player.hasPermission(perm)) return true;
 		else return false;
 	}
-
 }
