@@ -18,48 +18,27 @@ public class TabListener implements Listener{
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent e){
 		Player player = e.getPlayer();
-		if((colour(player) + player.getName() + "§f").length() > 16){
-			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
+		
+		String colours = main.getPlayerColours(player);
+		if(colours.length() <= 0) return;
+		
+		if((colours + player.getName() + "§f").length() > 16){
+			player.setPlayerListName((colours + player.getName()).substring(0, 13) + "-" + "§f");
 		}else{
-			player.setPlayerListName(colour(player) + player.getName() + "§f");
+			player.setPlayerListName(colours + player.getName() + "§f");
 		}
 	}
 	
 	public void onWorldChange(PlayerChangedWorldEvent e){
 		Player player = e.getPlayer();
-		if((colour(player) + player.getName() + "§f").length() > 16){
-			player.setPlayerListName((colour(player) + player.getName()).substring(0, 13) + "-" + "§f");
+		
+		String colours = main.getPlayerColours(player);
+		if(colours.length() <= 0) return;
+		
+		if((colours + player.getName() + "§f").length() > 16){
+			player.setPlayerListName((colours + player.getName()).substring(0, 13) + "-" + "§f");
 		}else{
-			player.setPlayerListName(colour(player) + player.getName() + "§f");
+			player.setPlayerListName(colours + player.getName() + "§f");
 		}
-	}
-	
-	public String colour(Player player){
-		String ret = "";
-		String N = "Prefixed.COLOUR.";
-		if(player.hasPermission(N+"YELLOW"))ret = "§e";
-		if(player.hasPermission(N+"PINK"))ret = "§d";
-		if(player.hasPermission(N+"RED"))ret = "§c";
-		if(player.hasPermission(N+"AQUA"))ret = "§b";
-		if(player.hasPermission(N+"BGREEN"))ret = "§a";
-		if(player.hasPermission(N+"INDIGO"))ret = "§9";
-		if(player.hasPermission(N+"DGREY"))ret = "§8";
-		if(player.hasPermission(N+"GREY"))ret = "§7";
-		if(player.hasPermission(N+"GOLD"))ret = "§6";
-		if(player.hasPermission(N+"PURPLE"))ret = "§5";
-		if(player.hasPermission(N+"DRED"))ret = "§4";
-		if(player.hasPermission(N+"DAQUA"))ret = "§3";
-		if(player.hasPermission(N+"DGREEN"))ret = "§2";
-		if(player.hasPermission(N+"DBLUE"))ret = "§1";
-		if(player.hasPermission(N+"BLACK"))ret = "§0";
-		if(player.hasPermission(N+"RANDOM")){
-			ret = ret + "§k";
-			return ret;
-		}
-		if(player.hasPermission(N+"BOLD"))ret = ret + "§l";
-		if(player.hasPermission(N+"STRIKE"))ret = ret+ "§n";
-		if(player.hasPermission(N+"UNDERLINE"))ret = ret + "§m";
-		if(player.hasPermission(N+"ITALIC"))ret = ret + "§0";
-		return ret;
 	}
 }
