@@ -20,12 +20,12 @@ public class TabListener implements Listener{
 		Player player = e.getPlayer();
 		
 		String colours = main.getPlayerColours(player);
-		if(colours.length() <= 0) return;
-		
-		if((colours + player.getName() + "§f").length() > 16){
-			player.setPlayerListName((colours + player.getName()).substring(0, 13) + "-" + "§f");
-		}else{
-			player.setPlayerListName(colours + player.getName() + "§f");
+		if(colours.length() > 0){
+			if((colours + player.getName() + "§f").length() > 16){
+				player.setPlayerListName((colours + player.getName()).substring(0, 13) + "-" + "§f");
+			}else{
+				player.setPlayerListName(colours + player.getName() + "§f");
+			}
 		}
 	}
 	
@@ -33,12 +33,12 @@ public class TabListener implements Listener{
 		Player player = e.getPlayer();
 		
 		String colours = main.getPlayerColours(player);
-		if(colours.length() <= 0) return;
-		
-		if((colours + player.getName() + "§f").length() > 16){
-			player.setPlayerListName((colours + player.getName()).substring(0, 13) + "-" + "§f");
-		}else{
-			player.setPlayerListName(colours + player.getName() + "§f");
+		if(colours.length() > 0){
+			if((colours + player.getName() + "§f").length() > 16){
+				player.setPlayerListName((colours + player.getName()).substring(0, 13) + "-" + "§f");
+			}else{
+				player.setPlayerListName(colours + player.getName() + "§f");
+			}
 		}
 	}
 }
