@@ -2,49 +2,69 @@ main: ca.docilecraft.Prefixed
 name: Prefixed
 author: Doggyroc
 website: http://dev.bukkit.org/server-mods/prefixed/
-version: 2.0
+version: 2.1
 softdepend: [Vault, TagAPI]
 permissions:
     Prefixed.colour:
         description: Allows talking in colour.
         default: op
-    Prefixed.COLOUR.BLACK:
+    Prefixed.colour.black:
+        description: Both tab list and name tag turn black.
         default: false
-    Prefixed.COLOUR.DBLUE:
+    Prefixed.colour.dblue:
+        description: Both tab list and name tag turn dark blue.
         default: false
-    Prefixed.COLOUR.DGREEN:
+    Prefixed.colour.dgreen:
+        description: Both tab list and name tag turn dark green.
         default: false
-    Prefixed.COLOUR.DAQUA:
+    Prefixed.colour.daqua:
+        description: Both tab list and name tag turn dark aqua.
         default: false
-    Prefixed.COLOUR.DRED:
+    Prefixed.colour.dred:
+        description: Both tab list and name tag turn dark red.
         default: false
-    Prefixed.COLOUR.PURPLE:
+    Prefixed.colour.purple:
+        description: Both tab list and name tag turn purple.
         default: false
-    Prefixed.COLOUR.GOLD:
+    Prefixed.colour.gold:
+        description: Both tab list and name tag turn gold.
         default: false
-    Prefixed.COLOUR.GREY:
+    Prefixed.colour.grey:
+        description: Both tab list and name tag turn grey.
         default: false
-    Prefixed.COLOUR.DGREY:
+    Prefixed.colour.dgrey:
+        description: Both tab list and name tag turn dark grey.
         default: false
-    Prefixed.COLOUR.INDIGO:
+    Prefixed.colour.indigo:
+        description: Both tab list and name tag turn indigo.
         default: false
-    Prefixed.COLOUR.BGREEN:
+    Prefixed.colour.bgreen:
+        description: Both tab list and name tag turn bright green.
         default: false
-    Prefixed.COLOUR.AQUA:
+    Prefixed.colour.aqua:
+        description: Both tab list and name tag turn aqua.
         default: false
-    Prefixed.COLOUR.RED:
+    Prefixed.colour.red:
+        description: Both tab list and name tag turn red.
         default: false
-    Prefixed.COLOUR.PINK:
+    Prefixed.colour.pink:
+        description: Both tab list and name tag turn pink.
         default: false
-    Prefixed.COLOUR.YELLOW:
+    Prefixed.colour.yellow:
+        description: Both tab list and name tag turn yellow.
         default: false
-    Prefixed.COLOUR.RANDOM:
+    Prefixed.colour.random:
+        description: Both tab list and name tag turn into random letters.
         default: false
-    Prefixed.COLOUR.BOLD:
+    Prefixed.colour.bold:
+        description: Both tab list and name tag turn into bolded letters.
         default: false
-    Prefixed.COLOUR.STRIKE:
+    Prefixed.colour.strike:
+        description: Both tab list and name tag turn into striked letters.
         default: false
-    Prefixed.COLOUR.UNDERLINE:
+    Prefixed.colour.underline:
+        description: Both tab list and name tag turn into underlined letters.
         default: false
-    Prefixed.COLOUR.ITALIC:
+    Prefixed.colour.italic:
+        description: Both tab list and name tag turn into italicised letters.
         default: false

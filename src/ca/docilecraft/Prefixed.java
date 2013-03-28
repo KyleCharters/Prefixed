@@ -4,33 +4,39 @@ import java.io.IOException;
 
 import net.milkbowl.vault.chat.Chat;
 
-import org.bukkit.entity.Player;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Prefixed extends JavaPlugin {
 	
+	public static Chat chat = null;
+	public static FileConfiguration config;
+	public static boolean 
+	vaultEnabled = false;
+	
 //Startup
 	
 	public void onEnable(){
-		
 		try {
-		Metrics metrics = new Metrics(this);
-		metrics.start();
+			Metrics metrics = new Metrics(this);
+			metrics.start();
 		} catch (IOException e) {
-		log(1, "Could not connect to Metrics!");
+			log(1, "Could not connect to Metrics!");
 		}
 		
 		PluginManager PluginM = getServer().getPluginManager();
 		
 		//I'm starting the engine! Vroom! Vroom!
 		if(PluginM.isPluginEnabled("Vault")){
-			PluginM.registerEvents(new ChatListener(this), this);
+			vaultEnabled = true;
+			PluginM.registerEvents(new ChatListener(), this);
 			setupChat();
 			
 			getConfig().options().copyDefaults(true);
 			saveConfig();
+			config = getConfig();
 			
 			log(0, "Hooked Into Vault!");
 		}else{
@@ -42,12 +48,12 @@ public class Prefixed extends JavaPlugin {
 		
 		//To use Tab List, Or to not use Tab List. That is the question.
 		if(getConfig().getBoolean("useTabList")){
-			PluginM.registerEvents(new TabListener(this), this);
+			PluginM.registerEvents(new TabListener(), this);
 		}
 		
 		//Look! I caught something!
 		if(PluginM.isPluginEnabled("TagAPI") && getConfig().getBoolean("useNameTag")){
-			PluginM.registerEvents(new TagListener(this), this);
+			PluginM.registerEvents(new TagListener(), this);
 			log(0, "Hooked into TagAPI!");
 		}
 		
@@ -58,11 +64,10 @@ public class Prefixed extends JavaPlugin {
 		log(0, "Disabled!");
 	}
 	
-	/* Vault
+	/* 
+	 * Vault
 	 * -----
 	 */
-	
-	public static Chat chat = null;
 	
 	private boolean setupChat(){
 		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
@@ -73,38 +78,9 @@ public class Prefixed extends JavaPlugin {
 	return (chat != null);
 }
 
-	/* -----
-	 * Vault
+	/* 
+	 * -----
 	 */
-
-	public synchronized String getPlayerColours(Player player){
-		String ret = "";
-		if(player.hasPermission("Prefixed.COLOUR.YELLOW"))ret = "§e";
-		else if(player.hasPermission("Prefixed.COLOUR.PINK"))ret = "§d";
-		else if(player.hasPermission("Prefixed.COLOUR.RED"))ret = "§c";
-		else if(player.hasPermission("Prefixed.COLOUR.AQUA"))ret = "§b";
-		else if(player.hasPermission("Prefixed.COLOUR.BGREEN"))ret = "§a";
-		else if(player.hasPermission("Prefixed.COLOUR.INDIGO"))ret = "§9";
-		else if(player.hasPermission("Prefixed.COLOUR.DGREY"))ret = "§8";
-		else if(player.hasPermission("Prefixed.COLOUR.GREY"))ret = "§7";
-		else if(player.hasPermission("Prefixed.COLOUR.GOLD"))ret = "§6";
-		else if(player.hasPermission("Prefixed.COLOUR.PURPLE"))ret = "§5";
-		else if(player.hasPermission("Prefixed.COLOUR.DRED"))ret = "§4";
-		else if(player.hasPermission("Prefixed.COLOUR.DAQUA"))ret = "§3";
-		else if(player.hasPermission("Prefixed.COLOUR.DGREEN"))ret = "§2";
-		else if(player.hasPermission("Prefixed.COLOUR.DBLUE"))ret = "§1";
-		else if(player.hasPermission("Prefixed.COLOUR.BLACK"))ret = "§0";
-		
-		if(player.hasPermission("Prefixed.COLOUR.RANDOM")){
-			ret = ret + "§k";
-			return ret;
-		}
-		if(player.hasPermission("Prefixed.COLOUR.BOLD"))ret = ret + "§l";
-		if(player.hasPermission("Prefixed.COLOUR.STRIKE"))ret = ret+ "§n";
-		if(player.hasPermission("Prefixed.COLOUR.UNDERLINE"))ret = ret + "§m";
-		if(player.hasPermission("Prefixed.COLOUR.ITALIC"))ret = ret + "§0";
-		return ret;
-	}
 
 	public void log(int level, String out){
 		if(level == 0) getLogger().info(out);
