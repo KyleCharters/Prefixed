@@ -54,6 +54,12 @@ public class CommandHandler implements CommandExecutor{
 				}
 				sender.sendMessage(Title+ChatColor.RED+": Unknown player.");
 				return true;
+			}else if(arg.length == 0){
+				sender.sendMessage(Title+": Prefixed version "+main.getDescription().getVersion());
+				sender.sendMessage(Title+": Prefixed Commands:");
+				sender.sendMessage(Title+": /prefixed [prefix/suffix] <playername> : Shows the prefix or suffix of a player.");
+				sender.sendMessage(Title+": /prefixed reload : reloads config.");
+				return true;
 			}
 			sender.sendMessage(Title+ChatColor.RED+": Unknown argument.");
 			return true;
