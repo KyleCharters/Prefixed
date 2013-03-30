@@ -13,8 +13,7 @@ public class Prefixed extends JavaPlugin {
 	
 	public static Chat chat = null;
 	public static FileConfiguration config;
-	public static boolean 
-	vaultEnabled = false;
+	public static boolean vaultEnabled = false;
 	
 //Startup
 	
@@ -32,6 +31,7 @@ public class Prefixed extends JavaPlugin {
 		if(PluginM.isPluginEnabled("Vault")){
 			vaultEnabled = true;
 			PluginM.registerEvents(new ChatListener(), this);
+			getCommand("Prefixed").setExecutor(new CommandHandler(this));
 			setupChat();
 			
 			getConfig().options().copyDefaults(true);
@@ -86,5 +86,12 @@ public class Prefixed extends JavaPlugin {
 		if(level == 0) getLogger().info(out);
 		if(level == 1) getLogger().warning(out);
 		if(level == 2) getLogger().severe(out);
+	}
+	
+	public void reload(){
+		reloadConfig();
+		config = getConfig();
+		
+		TabListener.reloadTabList();
 	}
 }

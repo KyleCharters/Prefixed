@@ -2,9 +2,15 @@ main: ca.docilecraft.Prefixed
 name: Prefixed
 author: Doggyroc
 website: http://dev.bukkit.org/server-mods/prefixed/
-version: 2.1
+version: 3.0
 softdepend: [Vault, TagAPI]
+commands:
+    Prefixed:
+        description: Prefixed command for reloading config and checking prefixes and suffixes.
 permissions:
+    Prefixed.admin:
+        description: Allows player to reload config, check prefixes and suffixes, and toggle debug.
+        default: op
     Prefixed.colour:
         description: Allows talking in colour.
         default: op

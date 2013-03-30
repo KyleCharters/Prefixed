@@ -1,5 +1,7 @@
 package ca.docilecraft;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,5 +18,11 @@ public class TabListener implements Listener{
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onWorldChange(PlayerChangedWorldEvent e){
 		e.getPlayer().setPlayerListName(Get.playerNameTag(e.getPlayer()));
+	}
+	
+	public static void reloadTabList(){
+		for(Player player:Bukkit.getOnlinePlayers()){
+			player.setPlayerListName(Get.playerNameTag(player));
+		}
 	}
 }
