@@ -53,6 +53,14 @@ public class Prefixed extends JavaPlugin {
 		
 		//Look! I caught something!
 		if(PluginM.isPluginEnabled("TagAPI") && getConfig().getBoolean("useNameTag")){
+			try {
+	            Class.forName("org.kitteh.tag.AsyncPlayerReceiveNameTagEvent");
+	        } catch (final ClassNotFoundException e) {
+	            log(2, "You need a newer version of TagAPI!");
+	            log(2, "Download it at http://dev.bukkit.org/server-mods/tag/");
+	            this.getServer().getPluginManager().disablePlugin(this);
+	            return;
+	        }
 			PluginM.registerEvents(new TagListener(), this);
 			log(0, "Hooked into TagAPI!");
 		}
