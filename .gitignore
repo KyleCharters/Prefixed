@@ -2,4 +2,8 @@
 .settings
 .classpath
 .project
+.externalToolBuilders
+lib
 bin
+svr
+build.xml

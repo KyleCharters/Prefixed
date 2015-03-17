@@ -13,7 +13,6 @@ public class Prefixed extends JavaPlugin {
 	
 	public static Chat chat = null;
 	public static FileConfiguration config;
-	public static boolean vaultEnabled = false;
 	
 //Startup
 	
@@ -27,42 +26,23 @@ public class Prefixed extends JavaPlugin {
 		
 		PluginManager PluginM = getServer().getPluginManager();
 		
-		//I'm starting the engine! Vroom! Vroom!
-		if(PluginM.isPluginEnabled("Vault")){
-			vaultEnabled = true;
-			PluginM.registerEvents(new ChatListener(), this);
-			getCommand("Prefixed").setExecutor(new CommandHandler(this));
-			setupChat();
-			
-			getConfig().options().copyDefaults(true);
-			saveConfig();
-			config = getConfig();
-			
-			log(0, "Hooked Into Vault!");
-		}else{
+		if(!PluginM.isPluginEnabled("Vault")){
 			log(2, "This plugin requires Vault to run!");
 			log(2, "Download Vault at http://dev.bukkit.org/server-mods/Vault");
 			PluginM.disablePlugin(this);
 			return;
 		}
 		
-		//To use Tab List, Or to not use Tab List. That is the question.
+		PluginM.registerEvents(new ChatListener(), this);
+		getCommand("Prefixed").setExecutor(new CommandHandler(this));
+		setupChat();
+		
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+		config = getConfig();
+		
 		if(getConfig().getBoolean("useTabList")){
 			PluginM.registerEvents(new TabListener(), this);
-		}
-		
-		//Look! I caught something!
-		if(PluginM.isPluginEnabled("TagAPI") && getConfig().getBoolean("useNameTag")){
-			try {
-	            Class.forName("org.kitteh.tag.AsyncPlayerReceiveNameTagEvent");
-	        } catch (final ClassNotFoundException e) {
-	            log(2, "You need a newer version of TagAPI!");
-	            log(2, "Download it at http://dev.bukkit.org/server-mods/tag/");
-	            this.getServer().getPluginManager().disablePlugin(this);
-	            return;
-	        }
-			PluginM.registerEvents(new TagListener(), this);
-			log(0, "Hooked into TagAPI!");
 		}
 		
 		log(0, "Enabled!");
@@ -78,9 +58,11 @@ public class Prefixed extends JavaPlugin {
 	 */
 	
 	private boolean setupChat(){
-		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+	RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(Chat.class);
 	if (chatProvider != null){
 		chat = chatProvider.getProvider();
+		
+		log(0, "Sucessfully Hooked Into Vault!");
 	}
 	
 	return (chat != null);

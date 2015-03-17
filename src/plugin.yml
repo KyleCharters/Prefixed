@@ -1,0 +1,76 @@
+main: ca.docilecraft.Prefixed
+name: Prefixed
+author: WindX
+website: http://dev.bukkit.org/server-mods/prefixed/
+version: 3.1
+softdepend: [Vault]
+commands:
+    Prefixed:
+        description: Prefixed universal command
+permissions:
+    Prefixed.admin:
+        description: Allows player to reload config, check prefixes and suffixes, and toggle debug.
+        default: op
+    Prefixed.colour:
+        description: Allows talking in colour.
+        default: op
+    Prefixed.colour.black:
+        description: Tab list name turn black.
+        default: false
+    Prefixed.colour.dblue:
+        description: Tab list name turn dark blue.
+        default: false
+    Prefixed.colour.dgreen:
+        description: Tab list name turn dark green.
+        default: false
+    Prefixed.colour.daqua:
+        description: Tab list name turn dark aqua.
+        default: false
+    Prefixed.colour.dred:
+        description: Tab list name turn dark red.
+        default: false
+    Prefixed.colour.purple:
+        description: Tab list name turn purple.
+        default: false
+    Prefixed.colour.gold:
+        description: Tab list name turn gold.
+        default: false
+    Prefixed.colour.grey:
+        description: Tab list name turn grey.
+        default: false
+    Prefixed.colour.dgrey:
+        description: Tab list name turn dark grey.
+        default: false
+    Prefixed.colour.indigo:
+        description: Tab list name turn indigo.
+        default: false
+    Prefixed.colour.bgreen:
+        description: Tab list name turn bright green.
+        default: false
+    Prefixed.colour.aqua:
+        description: Tab list name turn aqua.
+        default: false
+    Prefixed.colour.red:
+        description: Tab list name turn red.
+        default: false
+    Prefixed.colour.pink:
+        description: Tab list name turn pink.
+        default: false
+    Prefixed.colour.yellow:
+        description: Tab list name turn yellow.
+        default: false
+    Prefixed.colour.random:
+        description: Tab list name turn into random letters.
+        default: false
+    Prefixed.colour.bold:
+        description: Tab list name turn into bolded letters.
+        default: false
+    Prefixed.colour.strike:
+        description: Tab list name turn into striked letters.
+        default: false
+    Prefixed.colour.underline:
+        description: Tab list name turn into underlined letters.
+        default: false
+    Prefixed.colour.italic:
+        description: Tab list name turn into italicised letters.
+        default: false

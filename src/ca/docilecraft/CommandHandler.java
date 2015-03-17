@@ -18,21 +18,24 @@ public class CommandHandler implements CommandExecutor{
 		main = pre;
 	}
 	
-	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg) {
-		if(sender.hasPermission("Prefixed.admin")){
+		//Check Permission
+		if(sender.hasPermission("Prefixed.Admin")){
+			//Check if command has 1 argument
 			if(arg.length == 1){
+				//Check if argument equals reload
 				if(arg[0].equalsIgnoreCase("reload")){
 					main.reload();
 					sender.sendMessage(Title+": Config reloaded, here are the new nodes:");
 					sender.sendMessage(Title+": Chat format = "+Prefixed.config.getString("format"));
 					sender.sendMessage(Title+": Using multiple prefixes = "+Prefixed.config.getBoolean("useMultiple"));
 					sender.sendMessage(Title+": Using display names = "+Prefixed.config.getString("useDisplayName"));
-					sender.sendMessage(Title+": Using custom name tags = "+Prefixed.config.getString("useNameTag"));
-					sender.sendMessage(Title+": Using custom tab list names = "+Prefixed.config.getString("useTabList"));
+					sender.sendMessage(Title+": Using custom Tab list names = "+Prefixed.config.getString("useTabList"));
 					return true;
 				}
+			//Check if command h as 2 arguments
 			}else if(arg.length == 2){
+				//Check if argument equals prefix
 				if(arg[0].equalsIgnoreCase("prefix")){
 					for(Player player:Bukkit.getOnlinePlayers()){
 						if(StringUtil.startsWithIgnoreCase(player.getName(), arg[1])){
@@ -42,6 +45,7 @@ public class CommandHandler implements CommandExecutor{
 							return true;
 						}
 					}
+				//Check if argument equals suffix
 				}else if(arg[0].equalsIgnoreCase("suffix")){
 					for(Player player:Bukkit.getOnlinePlayers()){
 						if(StringUtil.startsWithIgnoreCase(player.getName(), arg[1])){
@@ -54,6 +58,7 @@ public class CommandHandler implements CommandExecutor{
 				}
 				sender.sendMessage(Title+ChatColor.RED+": Unknown player.");
 				return true;
+			//Check if command has no arguments
 			}else if(arg.length == 0){
 				sender.sendMessage(Title+": Prefixed version "+main.getDescription().getVersion());
 				sender.sendMessage(Title+": Prefixed Commands:");

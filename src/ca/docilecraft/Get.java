@@ -18,7 +18,7 @@ class Get{
 	public static String chatPrefix(Player player){
 		Chat chat = Prefixed.chat;
 		
-		StringBuilder prefix = new StringBuilder().append(chat.getPlayerPrefix(player.getWorld(), player.getName())).append(ChatColor.WHITE);
+		StringBuilder prefix = new StringBuilder().append(chat.getPlayerPrefix(player)).append(ChatColor.WHITE);
 		
 		if(config.getBoolean("useMultiple")){
 			//if multiple suffixes are enabled
@@ -34,7 +34,7 @@ class Get{
 	public static String chatSuffix(Player player){
 		Chat chat = Prefixed.chat;
 		
-		StringBuilder suffix = new StringBuilder().append(chat.getPlayerSuffix(player.getWorld(), player.getName())).append(ChatColor.WHITE);
+		StringBuilder suffix = new StringBuilder().append(chat.getPlayerSuffix(player)).append(ChatColor.WHITE);
 		
 		if(config.getBoolean("useMultiple")){
 			//if multiple suffixes are enabled
@@ -53,6 +53,8 @@ class Get{
 			.replace("-Suffix", chatSuffix(player)) //Adding in suffix
 			.replace("-Player", config.getBoolean("useDisplayName") ? player.getDisplayName() : player.getName()) //Adding in name [Check if using display name]
 			.replace("-World", player.getWorld().getName())) //Adding with current world : End the colour formatting
+			.replace("-IPAddress", String.valueOf(player.getAddress().getHostString()))
+			.replace("-IPPort", String.valueOf(player.getAddress().getPort()))
 			.replace("-Message", player.hasPermission("Prefixed.Colour")? ChatColor.translateAlternateColorCodes('&', message) : message) //Adding in the message [Check if player has permission to chat in colour]
 			.replace("%", "%%");
 	}
@@ -62,36 +64,36 @@ class Get{
 	 */
 	
 	/*
-	 * Tab List And Name Tag
+	 * Tab List
 	 * ---------------------
 	 */
 	
 	public static String playerColours(Player player){
-		String ret = "";
-		if(player.hasPermission("Prefixed.colour.yellow"))ret = "§e";
-		else if(player.hasPermission("Prefixed.colour.pink"))ret = "§d";
-		else if(player.hasPermission("Prefixed.colour.red"))ret = "§c";
-		else if(player.hasPermission("Prefixed.colour.aqua"))ret = "§b";
-		else if(player.hasPermission("Prefixed.colour.bgreen"))ret = "§a";
-		else if(player.hasPermission("Prefixed.colour.indigo"))ret = "§9";
-		else if(player.hasPermission("Prefixed.colour.dgrey"))ret = "§8";
-		else if(player.hasPermission("Prefixed.colour.grey"))ret = "§7";
-		else if(player.hasPermission("Prefixed.colour.gold"))ret = "§6";
-		else if(player.hasPermission("Prefixed.colour.purple"))ret = "§5";
-		else if(player.hasPermission("Prefixed.colour.dred"))ret = "§4";
-		else if(player.hasPermission("Prefixed.colour.daqua"))ret = "§3";
-		else if(player.hasPermission("Prefixed.colour.dgreen"))ret = "§2";
-		else if(player.hasPermission("Prefixed.colour.dblue"))ret = "§1";
-		else if(player.hasPermission("Prefixed.colour.black"))ret = "§0";
+		String c = "";
+		if(player.hasPermission("Prefixed.colour.yellow"))c = "§e";
+		else if(player.hasPermission("Prefixed.colour.pink"))c = "§d";
+		else if(player.hasPermission("Prefixed.colour.red"))c = "§c";
+		else if(player.hasPermission("Prefixed.colour.aqua"))c = "§b";
+		else if(player.hasPermission("Prefixed.colour.bgreen"))c = "§a";
+		else if(player.hasPermission("Prefixed.colour.indigo"))c = "§9";
+		else if(player.hasPermission("Prefixed.colour.dgrey"))c = "§8";
+		else if(player.hasPermission("Prefixed.colour.grey"))c = "§7";
+		else if(player.hasPermission("Prefixed.colour.gold"))c = "§6";
+		else if(player.hasPermission("Prefixed.colour.purple"))c = "§5";
+		else if(player.hasPermission("Prefixed.colour.dred"))c = "§4";
+		else if(player.hasPermission("Prefixed.colour.daqua"))c = "§3";
+		else if(player.hasPermission("Prefixed.colour.dgreen"))c = "§2";
+		else if(player.hasPermission("Prefixed.colour.dblue"))c = "§1";
+		else if(player.hasPermission("Prefixed.colour.black"))c = "§0";
 		if(player.hasPermission("Prefixed.colour.random")){
-			ret = ret + "§k";
-			return ret;
+			c = c + "§k";
+			return c;
 		}
-		if(player.hasPermission("Prefixed.colour.bold"))ret = ret + "§l";
-		if(player.hasPermission("Prefixed.colour.strike"))ret = ret+ "§n";
-		if(player.hasPermission("Prefixed.colour.underline"))ret = ret + "§m";
-		if(player.hasPermission("Prefixed.colour.italic"))ret = ret + "§0";
-		return ret;
+		if(player.hasPermission("Prefixed.colour.bold"))c = c + "§l";
+		if(player.hasPermission("Prefixed.colour.strike"))c = c+ "§n";
+		if(player.hasPermission("Prefixed.colour.underline"))c = c + "§m";
+		if(player.hasPermission("Prefixed.colour.italic"))c = c + "§0";
+		return c;
 	}
 	
 	public static String playerNameTag(Player player){
