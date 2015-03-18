@@ -41,10 +41,10 @@ permissions:
     Prefixed.colour.dgrey:
         description: Tab list name turn dark grey.
         default: false
-    Prefixed.colour.indigo:
-        description: Tab list name turn indigo.
+    Prefixed.colour.blue:
+        description: Tab list name turn blue.
         default: false
-    Prefixed.colour.bgreen:
+    Prefixed.colour.green:
         description: Tab list name turn bright green.
         default: false
     Prefixed.colour.aqua:
@@ -59,8 +59,8 @@ permissions:
     Prefixed.colour.yellow:
         description: Tab list name turn yellow.
         default: false
-    Prefixed.colour.random:
-        description: Tab list name turn into random letters.
+    Prefixed.colour.obfuscated:
+        description: Tab list name turn into obfuscated letters.
         default: false
     Prefixed.colour.bold:
         description: Tab list name turn into bolded letters.

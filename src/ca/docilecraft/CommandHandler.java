@@ -9,13 +9,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 public class CommandHandler implements CommandExecutor{
+	public CommandHandler(Prefixed prefixed){
+		main = prefixed;
+	}
 	
-	private String Title = ChatColor.RED+"Pre"+ChatColor.BLACK+"fixed"+ChatColor.WHITE;
+	private String Title = ChatColor.BLACK+"Pre"+ChatColor.RED+"fixed"+ChatColor.WHITE;
 	
 	Prefixed main;
 	
-	public CommandHandler(Prefixed pre){
-		main = pre;
+	private void showHelp(CommandSender sender){
+		sender.sendMessage(Title+": Prefixed version "+main.getDescription().getVersion());
+		sender.sendMessage(Title+": Prefixed Commands:");
+		sender.sendMessage(Title+": /prefixed [prefix/suffix] <playername> : Shows the prefix or suffix of a player.");
+		sender.sendMessage(Title+": /prefixed [setprefix/setsuffix] <playername> <newvar> : Sets prefix or suffix of a player.");
+		sender.sendMessage(Title+": /prefixed reload : reloads config.");
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg) {
@@ -27,10 +34,14 @@ public class CommandHandler implements CommandExecutor{
 				if(arg[0].equalsIgnoreCase("reload")){
 					main.reload();
 					sender.sendMessage(Title+": Config reloaded, here are the new nodes:");
-					sender.sendMessage(Title+": Chat format = "+Prefixed.config.getString("format"));
-					sender.sendMessage(Title+": Using multiple prefixes = "+Prefixed.config.getBoolean("useMultiple"));
-					sender.sendMessage(Title+": Using display names = "+Prefixed.config.getString("useDisplayName"));
-					sender.sendMessage(Title+": Using custom Tab list names = "+Prefixed.config.getString("useTabList"));
+					sender.sendMessage(Title+": Chat format = "+PrefixedConfig.format);
+					sender.sendMessage(Title+": Using multiple prefixes = "+PrefixedConfig.useMultiple);
+					sender.sendMessage(Title+": Using display names = "+PrefixedConfig.useDisplayName);
+					sender.sendMessage(Title+": Using custom Tab list names = "+PrefixedConfig.useTabList);
+					sender.sendMessage(Title+": All User and Group customs have been updated");
+					return true;
+				}else if(arg[0].equalsIgnoreCase("help")){
+					showHelp(sender);
 					return true;
 				}
 			//Check if command h as 2 arguments
@@ -40,7 +51,7 @@ public class CommandHandler implements CommandExecutor{
 					for(Player player:Bukkit.getOnlinePlayers()){
 						if(StringUtil.startsWithIgnoreCase(player.getName(), arg[1])){
 							
-							String prefix = Get.chatPrefix(player);
+							String prefix = PlayerInfo.getPrefix(player);
 							sender.sendMessage(Title+": "+player.getName()+"'s prefix is: "+(prefix.contains("&") ? ChatColor.translateAlternateColorCodes('&', prefix)+"("+prefix+")" : prefix));
 							return true;
 						}
@@ -50,7 +61,7 @@ public class CommandHandler implements CommandExecutor{
 					for(Player player:Bukkit.getOnlinePlayers()){
 						if(StringUtil.startsWithIgnoreCase(player.getName(), arg[1])){
 							
-							String suffix = Get.chatSuffix(player);
+							String suffix = PlayerInfo.getSuffix(player);
 							sender.sendMessage(Title+": "+player.getName()+"'s suffix is: "+(suffix.contains("&") ? ChatColor.translateAlternateColorCodes('&', suffix)+ "("+suffix+")" : suffix));
 							return true;
 						}
@@ -58,12 +69,19 @@ public class CommandHandler implements CommandExecutor{
 				}
 				sender.sendMessage(Title+ChatColor.RED+": Unknown player.");
 				return true;
+			}else if(arg.length == 3){
+				if(arg[0].equalsIgnoreCase("setprefix")){
+					CustomsHandler.setPrefix(arg[1], arg[2]);
+					sender.sendMessage(Title+": User "+arg[1]+"'s prefix set to: "+arg[2]);
+					return true;
+				}else if(arg[0].equalsIgnoreCase("setsuffix")){
+					CustomsHandler.setSuffix(arg[1], arg[2]);
+					sender.sendMessage(Title+": User "+arg[1]+"'s suffix set to: "+arg[2]);
+					return true;
+				}
 			//Check if command has no arguments
 			}else if(arg.length == 0){
-				sender.sendMessage(Title+": Prefixed version "+main.getDescription().getVersion());
-				sender.sendMessage(Title+": Prefixed Commands:");
-				sender.sendMessage(Title+": /prefixed [prefix/suffix] <playername> : Shows the prefix or suffix of a player.");
-				sender.sendMessage(Title+": /prefixed reload : reloads config.");
+				showHelp(sender);
 				return true;
 			}
 			sender.sendMessage(Title+ChatColor.RED+": Unknown argument.");

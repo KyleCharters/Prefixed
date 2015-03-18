@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import net.milkbowl.vault.chat.Chat;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,11 +11,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Prefixed extends JavaPlugin {
 	
 	public static Chat chat = null;
-	public static FileConfiguration config;
+	private PluginManager PluginM = getServer().getPluginManager();
 	
-//Startup
-	
+	/*
+	 * Plugin startup
+	 */
 	public void onEnable(){
+		//Reporting to metrics
 		try {
 			Metrics metrics = new Metrics(this);
 			metrics.start();
@@ -24,31 +25,33 @@ public class Prefixed extends JavaPlugin {
 			log(1, "Could not connect to Metrics!");
 		}
 		
-		PluginManager PluginM = getServer().getPluginManager();
-		
+		//Check if vault is running
 		if(!PluginM.isPluginEnabled("Vault")){
 			log(2, "This plugin requires Vault to run!");
 			log(2, "Download Vault at http://dev.bukkit.org/server-mods/Vault");
 			PluginM.disablePlugin(this);
 			return;
 		}
-		
-		PluginM.registerEvents(new ChatListener(), this);
-		getCommand("Prefixed").setExecutor(new CommandHandler(this));
 		setupChat();
 		
+		//Register Events
+		PluginM.registerEvents(new PrefixedListener.ChatListener(), this);
+		if(getConfig().getBoolean("useTabList"))
+			PluginM.registerEvents(new PrefixedListener.TabListener(), this);
+		
+		//Setup Config
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-		config = getConfig();
+		PrefixedConfig.loadConfig(this);
 		
-		if(getConfig().getBoolean("useTabList")){
-			PluginM.registerEvents(new TabListener(), this);
-		}
+		//Setup Command
+		getCommand("Prefixed").setExecutor(new CommandHandler(this));
 		
 		log(0, "Enabled!");
 	}
 	
 	public void onDisable(){
+		chat = null;
 		log(0, "Disabled!");
 	}
 	
@@ -57,16 +60,14 @@ public class Prefixed extends JavaPlugin {
 	 * -----
 	 */
 	
-	private boolean setupChat(){
-	RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(Chat.class);
-	if (chatProvider != null){
-		chat = chatProvider.getProvider();
-		
-		log(0, "Sucessfully Hooked Into Vault!");
+	private void setupChat(){
+		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(Chat.class);
+		if (chatProvider != null){
+			chat = chatProvider.getProvider();
+			
+			log(0, "Sucessfully Hooked Into Vault!");
+		}
 	}
-	
-	return (chat != null);
-}
 
 	/* 
 	 * -----
@@ -80,8 +81,9 @@ public class Prefixed extends JavaPlugin {
 	
 	public void reload(){
 		reloadConfig();
-		config = getConfig();
+		PrefixedConfig.loadConfig(this);
 		
-		TabListener.reloadTabList();
+		if(PrefixedConfig.useTabList)
+			PrefixedListener.TabListener.reloadTabList();
 	}
 }
