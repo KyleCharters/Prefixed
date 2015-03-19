@@ -3,20 +3,20 @@ package ca.docilecraft;
 import org.bukkit.entity.Player;
 
 public class PrefixedAPI{
-	public static String getPrefix(){
-		return "";
+	public static String getPrefix(String player){
+		return CustomsHandler.getPrefix(player);
 	}
 	
-	public static String getSuffix(){
-		return "";
+	public static String getSuffix(String player){
+		return CustomsHandler.getSuffix(player);
 	}
 	
-	public static void setPrefix(String suffix, String player){
-		
+	public static void setPrefix(String player, String prefix){
+		CustomsHandler.setPrefixe(player, prefix);
 	}
 	
-	public static void setSuffix(String suffix, String player){
-		
+	public static void setSuffix(String player, String suffix){
+		CustomsHandler.setSuffix(player, suffix);
 	}
 	
 	public static void addParameter(PrefixedParameter parameter){
