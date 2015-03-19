@@ -19,8 +19,7 @@ public class Prefixed extends JavaPlugin {
 	public void onEnable(){
 		//Reporting to metrics
 		try {
-			Metrics metrics = new Metrics(this);
-			metrics.start();
+			new Metrics(this).start();
 		} catch (IOException e) {
 			log(1, "Could not connect to Metrics!");
 		}
