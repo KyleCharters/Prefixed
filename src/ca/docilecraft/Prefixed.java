@@ -2,15 +2,11 @@ package ca.docilecraft;
 
 import java.io.IOException;
 
-import net.milkbowl.vault.chat.Chat;
-
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Prefixed extends JavaPlugin {
-	
-	public static Chat chat = null;
 	private PluginManager PluginM = getServer().getPluginManager();
 	
 	/*
@@ -24,15 +20,6 @@ public class Prefixed extends JavaPlugin {
 			log(1, "Could not connect to Metrics!");
 		}
 		
-		//Check if vault is running
-		if(!PluginM.isPluginEnabled("Vault")){
-			log(2, "This plugin requires Vault to run!");
-			log(2, "Download Vault at http://dev.bukkit.org/server-mods/Vault");
-			PluginM.disablePlugin(this);
-			return;
-		}
-		setupChat();
-		
 		//Register Events
 		PluginM.registerEvents(new PrefixedListener.ChatListener(), this);
 		if(getConfig().getBoolean("useTabList"))
@@ -41,48 +28,40 @@ public class Prefixed extends JavaPlugin {
 		//Setup Config
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-		PrefixedConfig.loadConfig(this);
+		PrefixedConfig.reload(this);
+		CustomsHandler.checkPlayers();
+		
+		//Check if vault is running
+		if(PluginM.isPluginEnabled("Vault")){
+			VaultManager.setupChat();
+		}
 		
 		//Setup Command
 		getCommand("Prefixed").setExecutor(new CommandHandler(this));
 		
+		//Log enabled
 		log(0, "Enabled!");
 	}
 	
-	public void onDisable(){
-		chat = null;
-		log(0, "Disabled!");
-	}
-	
-	/* 
-	 * Vault
-	 * -----
-	 */
-	
-	private void setupChat(){
-		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(Chat.class);
-		if (chatProvider != null){
-			chat = chatProvider.getProvider();
-			
-			log(0, "Sucessfully Hooked Into Vault!");
-		}
-	}
-
-	/* 
-	 * -----
-	 */
-
-	public void log(int level, String out){
-		if(level == 0) getLogger().info(out);
-		if(level == 1) getLogger().warning(out);
-		if(level == 2) getLogger().severe(out);
-	}
-	
 	public void reload(){
-		reloadConfig();
-		PrefixedConfig.loadConfig(this);
+		PrefixedConfig.reload(this);
+		CustomsHandler.checkPlayers();
 		
 		if(PrefixedConfig.useTabList)
 			PrefixedListener.TabListener.reloadTabList();
+	}
+	
+	public void onDisable(){
+		log(0, "Disabled!");
+	}
+
+	/* 
+	 * -----
+	 */
+
+	protected static void log(int level, String out){
+		if(level == 0) Bukkit.getServer().getLogger().info("[Prefixed] "+out);
+		if(level == 1) Bukkit.getServer().getLogger().warning("[Prefixed] "+out);
+		if(level == 2) Bukkit.getServer().getLogger().severe("[Prefixed] "+out);
 	}
 }

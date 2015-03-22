@@ -2,7 +2,3 @@ format: '[-World][-Prefix]-Player[-Suffix]: -Message'
 useMultiple: true
 useDisplayName: true
 useTabList: true
-players:
-  WindX:
-    prefix: '&0[&4Prefixed&0]&f'
-groups:
