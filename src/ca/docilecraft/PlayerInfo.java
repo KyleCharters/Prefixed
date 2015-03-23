@@ -1,6 +1,5 @@
 package ca.docilecraft;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class PlayerInfo{
@@ -12,14 +11,14 @@ public class PlayerInfo{
 	
 	//Returns player's name [Fit for tab list]
 	protected static String playerNameTag(Player player){
-		String ChatColor = getChatColor(player);
+		String chatColor = getChatColor(player);
 		String playerName = getName(player);
 		
-		if(ChatColor.length() > 0){
-			if((ChatColor + playerName + "§f").length() > 16){
-				return new StringBuilder().append(new StringBuilder().append(ChatColor).append(playerName).toString().substring(0, 13)).append("-§f").toString();
+		if(chatColor.length() > 0){
+			if((chatColor + playerName + "§f").length() > 16){
+				return new StringBuilder().append(new StringBuilder().append(chatColor).append(playerName).toString().substring(0, 13)).append("-§f").toString();
 			}else{
-				return new StringBuilder().append(ChatColor).append(playerName).append("§f").toString();
+				return new StringBuilder().append(chatColor).append(playerName).append("§f").toString();
 			}
 		}
 		return playerName;
@@ -27,15 +26,27 @@ public class PlayerInfo{
 	
 	//Returns player's prefix
 	protected static String getPrefix(Player player){
-		StringBuilder prefix = new StringBuilder().append(CustomsHandler.getPrefix(player.getName())+ChatColor.WHITE).append(ChatColor.WHITE);
+		StringBuilder prefix = new StringBuilder();
+		String customPrefix = CustomsHandler.getPrefix(player.getName());
 		
-		if(VaultManager.enabled){
-			prefix.append(VaultManager.chat.getPlayerPrefix(player)+ChatColor.WHITE);
+		if(!customPrefix.isEmpty()){
+			prefix.append(CustomsHandler.getPrefix(player.getName())+PColor.WHITE);
+			
+			if(PrefixedConfig.useMultiple && VaultManager.enabled){
+				prefix.append(VaultManager.chat.getPlayerPrefix(player)+PColor.WHITE);
+				
+				for(String group : VaultManager.chat.getPlayerGroups(player)){
+					String groupPre = VaultManager.chat.getGroupPrefix(player.getWorld(), group);
+					if(!prefix.toString().contains(groupPre)) prefix.append(groupPre).append(PColor.WHITE);
+				}
+			}
+		}else if(VaultManager.enabled){
+			prefix.append(VaultManager.chat.getPlayerPrefix(player)+PColor.WHITE);
 			
 			if(PrefixedConfig.useMultiple){
 				for(String group : VaultManager.chat.getPlayerGroups(player)){
 					String groupPre = VaultManager.chat.getGroupPrefix(player.getWorld(), group);
-					if(!prefix.toString().contains(groupPre)) prefix.append(groupPre).append(ChatColor.WHITE);
+					if(!prefix.toString().contains(groupPre)) prefix.append(groupPre).append(PColor.WHITE);
 				}
 			}
 		}
@@ -45,15 +56,27 @@ public class PlayerInfo{
 	
 	//Returns player's Suffix
 	protected static String getSuffix(Player player){
-		StringBuilder suffix = new StringBuilder().append(CustomsHandler.getSuffix(player.getName())+ChatColor.WHITE).append(ChatColor.WHITE);
+		StringBuilder suffix = new StringBuilder();
+		String customsuffix = CustomsHandler.getSuffix(player.getName());
 		
-		if(VaultManager.enabled){
-			suffix.append(VaultManager.chat.getPlayerSuffix(player)+ChatColor.WHITE);
+		if(!customsuffix.isEmpty()){
+			suffix.append(CustomsHandler.getSuffix(player.getName())+PColor.WHITE);
+			
+			if(PrefixedConfig.useMultiple && VaultManager.enabled){
+				suffix.append(VaultManager.chat.getPlayerSuffix(player)+PColor.WHITE);
+				
+				for(String group : VaultManager.chat.getPlayerGroups(player)){
+					String groupSuf = VaultManager.chat.getGroupSuffix(player.getWorld(), group);
+					if(!suffix.toString().contains(groupSuf)) suffix.append(groupSuf).append(PColor.WHITE);
+				}
+			}
+		}else if(VaultManager.enabled){
+			suffix.append(VaultManager.chat.getPlayerSuffix(player)+PColor.WHITE);
 			
 			if(PrefixedConfig.useMultiple){
 				for(String group : VaultManager.chat.getPlayerGroups(player)){
 					String groupSuf = VaultManager.chat.getGroupSuffix(player.getWorld(), group);
-					if(!suffix.toString().contains(groupSuf)) suffix.append(groupSuf).append(ChatColor.WHITE);
+					if(!suffix.toString().contains(groupSuf)) suffix.append(groupSuf).append(PColor.WHITE);
 				}
 			}
 		}
@@ -64,29 +87,31 @@ public class PlayerInfo{
 	//Returns player's ChatColor
 	protected static String getChatColor(Player player){
 		String c = "";
-		if(player.hasPermission("Prefixed.ChatColor.black"))c = ChatColor.BLACK.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.dblue"))c = ChatColor.DARK_BLUE.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.dgreen"))c = ChatColor.DARK_GREEN.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.daqua"))c = ChatColor.DARK_AQUA.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.dred"))c = ChatColor.DARK_RED.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.purple"))c = ChatColor.DARK_PURPLE.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.gold"))c = ChatColor.GOLD.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.grey"))c = ChatColor.GRAY.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.dgrey"))c = ChatColor.DARK_GRAY.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.blue"))c = ChatColor.BLUE.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.green"))c = ChatColor.GREEN.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.aqua"))c = ChatColor.AQUA.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.red"))c = ChatColor.RED.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.pink"))c = ChatColor.LIGHT_PURPLE.toString();
-		else if(player.hasPermission("Prefixed.ChatColor.yellow"))c = ChatColor.YELLOW.toString();
-		if(player.hasPermission("Prefixed.ChatColor.obfuscated")){
-			c = c + ChatColor.MAGIC.toString();
+		if(CustomsHandler.getColor(player.getName()) != null) c = PColor.getCodeFromString(CustomsHandler.getColor(player.getName()));
+		else if(player.hasPermission("Prefixed.color.black"))c = PColor.BLACK;
+		else if(player.hasPermission("Prefixed.color.dblue"))c = PColor.DARKBLUE;
+		else if(player.hasPermission("Prefixed.color.dgreen"))c = PColor.DARKGREEN;
+		else if(player.hasPermission("Prefixed.color.daqua"))c = PColor.DARKAQUA;
+		else if(player.hasPermission("Prefixed.color.dred"))c = PColor.DARKRED;
+		else if(player.hasPermission("Prefixed.color.purple"))c = PColor.PURPLE;
+		else if(player.hasPermission("Prefixed.color.gold"))c = PColor.GOLD;
+		else if(player.hasPermission("Prefixed.color.grey"))c = PColor.GRAY;
+		else if(player.hasPermission("Prefixed.color.dgrey"))c = PColor.DARKGRAY;
+		else if(player.hasPermission("Prefixed.color.blue"))c = PColor.BLUE;
+		else if(player.hasPermission("Prefixed.color.green"))c = PColor.GREEN;
+		else if(player.hasPermission("Prefixed.color.aqua"))c = PColor.AQUA;
+		else if(player.hasPermission("Prefixed.color.red"))c = PColor.RED;
+		else if(player.hasPermission("Prefixed.color.pink"))c = PColor.PINK;
+		else if(player.hasPermission("Prefixed.color.yellow"))c = PColor.YELLOW;
+		
+		if(player.hasPermission("Prefixed.color.obfuscated")){
+			c += PColor.OBFUSCATED;
 			return c;
 		}
-		if(player.hasPermission("Prefixed.ChatColor.bold"))c = c + ChatColor.BOLD.toString();
-		if(player.hasPermission("Prefixed.ChatColor.strike"))c = c+ ChatColor.STRIKETHROUGH.toString();
-		if(player.hasPermission("Prefixed.ChatColor.underline"))c = c + ChatColor.UNDERLINE.toString();
-		if(player.hasPermission("Prefixed.ChatColor.italic"))c = c + ChatColor.ITALIC.toString();
+		if(player.hasPermission("Prefixed.color.bold"))c += PColor.BOLD;
+		if(player.hasPermission("Prefixed.color.strike"))c += PColor.STRIKE;
+		if(player.hasPermission("Prefixed.color.underline"))c += PColor.UNDERLINE;
+		if(player.hasPermission("Prefixed.color.italic"))c += PColor.ITALIC;
 		return c;
 	}
 	

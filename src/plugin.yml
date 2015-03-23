@@ -11,66 +11,66 @@ permissions:
     Prefixed.admin:
         description: Allows player to reload config, check prefixes and suffixes, and toggle debug.
         default: op
-    Prefixed.colour:
-        description: Allows talking in colour.
+    Prefixed.color:
+        description: Allows talking in color.
         default: op
-    Prefixed.colour.black:
+    Prefixed.color.black:
         description: Tab list name turn black.
         default: false
-    Prefixed.colour.dblue:
+    Prefixed.color.dblue:
         description: Tab list name turn dark blue.
         default: false
-    Prefixed.colour.dgreen:
+    Prefixed.color.dgreen:
         description: Tab list name turn dark green.
         default: false
-    Prefixed.colour.daqua:
+    Prefixed.color.daqua:
         description: Tab list name turn dark aqua.
         default: false
-    Prefixed.colour.dred:
+    Prefixed.color.dred:
         description: Tab list name turn dark red.
         default: false
-    Prefixed.colour.purple:
+    Prefixed.color.purple:
         description: Tab list name turn purple.
         default: false
-    Prefixed.colour.gold:
+    Prefixed.color.gold:
         description: Tab list name turn gold.
         default: false
-    Prefixed.colour.grey:
+    Prefixed.color.grey:
         description: Tab list name turn grey.
         default: false
-    Prefixed.colour.dgrey:
+    Prefixed.color.dgrey:
         description: Tab list name turn dark grey.
         default: false
-    Prefixed.colour.blue:
+    Prefixed.color.blue:
         description: Tab list name turn blue.
         default: false
-    Prefixed.colour.green:
+    Prefixed.color.green:
         description: Tab list name turn bright green.
         default: false
-    Prefixed.colour.aqua:
+    Prefixed.color.aqua:
         description: Tab list name turn aqua.
         default: false
-    Prefixed.colour.red:
+    Prefixed.color.red:
         description: Tab list name turn red.
         default: false
-    Prefixed.colour.pink:
+    Prefixed.color.pink:
         description: Tab list name turn pink.
         default: false
-    Prefixed.colour.yellow:
+    Prefixed.color.yellow:
         description: Tab list name turn yellow.
         default: false
-    Prefixed.colour.obfuscated:
+    Prefixed.color.obfuscated:
         description: Tab list name turn into obfuscated letters.
         default: false
-    Prefixed.colour.bold:
+    Prefixed.color.bold:
         description: Tab list name turn into bolded letters.
         default: false
-    Prefixed.colour.strike:
+    Prefixed.color.strike:
         description: Tab list name turn into striked letters.
         default: false
-    Prefixed.colour.underline:
+    Prefixed.color.underline:
         description: Tab list name turn into underlined letters.
         default: false
-    Prefixed.colour.italic:
+    Prefixed.color.italic:
         description: Tab list name turn into italicised letters.
         default: false

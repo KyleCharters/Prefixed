@@ -11,10 +11,11 @@ public class PrefixedConfig{
 	private static FileConfiguration config;
 	
 	protected static void reload(Prefixed prefixed){
+		prefixed.reloadConfig();
 		main = prefixed;
 		config = prefixed.getConfig();
 		
-		reloadConfig();
+		loadConfig();
 		reloadPlayers();
 	}
 	
@@ -27,8 +28,7 @@ public class PrefixedConfig{
 	protected static boolean useDisplayName;
 	protected static boolean useTabList;
 	
-	protected static void reloadConfig(){
-		main.reloadConfig();
+	protected static void loadConfig(){
 		format = config.getString("format");
 		useMultiple = config.getBoolean("useMultiple");
 		useDisplayName = config.getBoolean("useDisplayName");

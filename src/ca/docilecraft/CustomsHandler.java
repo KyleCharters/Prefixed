@@ -38,6 +38,20 @@ public class CustomsHandler{
 	}
 	
 	/*
+	 * color
+	 */
+	
+	protected static String getColor(String player){
+		String color = getPlayer(player).getString("color");
+		return color;
+	}
+	
+	protected static void setColor(String player, String color){
+		getPlayer(player).set("color", color);
+		PrefixedConfig.savePlayers();
+	}
+	
+	/*
 	 * UTILITY
 	 */
 	
@@ -45,7 +59,18 @@ public class CustomsHandler{
 		return PrefixedConfig.getPlayers().getConfigurationSection(player);
 	}
 	
-	protected static void addPlayer(String name, String prefix, String suffix){
+	protected static boolean setPlayer(String name, String prefix, String suffix){
+		UUID uuid = null;
+		
+		try{
+			uuid = UUIDFetcher.getUUIDOf(name);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		if(uuid == null)
+			return false;
+		
 		ConfigurationSection section = PrefixedConfig.getPlayers().createSection(name);
 		
 		if(prefix != null){
@@ -54,14 +79,11 @@ public class CustomsHandler{
 		if(suffix != null){
 			section.set("suffix", suffix);
 		}
-		
-		try{
-			section.set("uuid", UUIDFetcher.getUUIDOf(name));
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		section.set("uuid", uuid.toString());
 		
 		PrefixedConfig.savePlayers();
+		
+		return true;
 	}
 	
 	protected static void removePlayer(String name){
@@ -88,14 +110,19 @@ public class CustomsHandler{
 						Prefixed.log(1, "User "+p+" does not exist");
 						continue;
 					}
+					
 					section.set("uuid", playerUUID.toString());
 					Prefixed.log(0, "UUID set for player "+p);
 				//Section contains valid uuid
 				}else{
 					String playerName = NameFetcher.getUsernameOf(UUID.fromString(section.getString("uuid")));
+					if(playerName == null){
+						Prefixed.log(1, "UUID of player "+p+" is invalid, updating.");
+						continue;
+					}
 					
 					//player name does not match uuid's player
-					if(!p.equals(playerName) && playerName != null){
+					if(!p.equals(playerName)){
 						//Duplicate sections
 						ConfigurationSection oldSection = section;
 						section = PrefixedConfig.getPlayers().createSection(playerName);

@@ -2,7 +2,6 @@ package ca.docilecraft;
 
 import java.util.ArrayList;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import ca.docilecraft.PrefixedAPI.PrefixedParameter;
@@ -50,6 +49,6 @@ public class MessageHandler{
 			}
 		}
 		
-		return ChatColor.translateAlternateColorCodes('&', s).replace("-Message", ChatColor.WHITE+(player.hasPermission("Prefixed.Colour") ? ChatColor.translateAlternateColorCodes('&', message) : message));
+		return PColor.translateColorCodes(s).replace("-Message", PColor.WHITE+(player.hasPermission("Prefixed.color") ? PColor.translateColorCodes(message) : message));
 	}
 }
