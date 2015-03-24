@@ -2,6 +2,8 @@ package ca.docilecraft;
 
 import java.util.UUID;
 
+import javax.swing.Timer;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import ca.docilecraft.fetchers.NameFetcher;
@@ -47,8 +49,9 @@ public class CustomsHandler{
 	}
 	
 	protected static void setColor(String player, String color){
-		getPlayer(player).set("color", color);
+		getPlayer(player).set("color", color.toUpperCase());
 		PrefixedConfig.savePlayers();
+		PrefixedListener.TabListener.reloadTabList();
 	}
 	
 	/*
@@ -59,7 +62,7 @@ public class CustomsHandler{
 		return PrefixedConfig.getPlayers().getConfigurationSection(player);
 	}
 	
-	protected static boolean setPlayer(String name, String prefix, String suffix){
+	protected static boolean setPlayer(String name, String prefix, String suffix, String color){
 		UUID uuid = null;
 		
 		try{
@@ -79,6 +82,10 @@ public class CustomsHandler{
 		if(suffix != null){
 			section.set("suffix", suffix);
 		}
+		if(color != null && PColor.isValidColor(color)){
+			section.set("color", color.toUpperCase());
+			PrefixedListener.TabListener.reloadTabList();
+		}
 		section.set("uuid", uuid.toString());
 		
 		PrefixedConfig.savePlayers();
@@ -91,12 +98,19 @@ public class CustomsHandler{
 		PrefixedConfig.savePlayers();
 	}
 	
+	static int time = 0;
+	
 	protected static void checkPlayers(){
 		try{
 			if(PrefixedConfig.getPlayers().getKeys(false).isEmpty()){
 				Prefixed.log(0, "Players file is empty");
 				return;
 			}
+			
+			Timer timer = new Timer(100, (l) -> {
+				time++;
+			});
+			timer.start();
 			
 			Prefixed.log(0, "Checking player uuids");
 			
@@ -143,7 +157,9 @@ public class CustomsHandler{
 			}
 			PrefixedConfig.savePlayers();
 			
-			Prefixed.log(0, "Finished checking player uuids");
+			timer.stop();
+			Prefixed.log(0, "Finished checking player uuids, Time taken: "+String.valueOf((double)time/10)+" seconds.");
+			time = 0;
 		}catch(Exception e){
 			e.printStackTrace();
 			Prefixed.log(3, "Error checking player uuids");

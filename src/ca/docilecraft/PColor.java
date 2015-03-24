@@ -26,31 +26,131 @@ public class PColor{
 	public static final String ITALIC = "§o";
 	public static final String RESET = "§r";
 	
+	public static boolean isValidColor(String color){
+		if(
+				color.equalsIgnoreCase("BLACK") ||
+				color.equalsIgnoreCase("DARKBLUE") ||
+				color.equalsIgnoreCase("DARKGREEN") ||
+				color.equalsIgnoreCase("DARKAQUA") ||
+				color.equalsIgnoreCase("DARKRED") ||
+				color.equalsIgnoreCase("PURPLE") ||
+				color.equalsIgnoreCase("GOLD") ||
+				color.equalsIgnoreCase("GRAY") ||
+				color.equalsIgnoreCase("DARKGRAY") ||
+				color.equalsIgnoreCase("BLUE") ||
+				color.equalsIgnoreCase("GREEN") ||
+				color.equalsIgnoreCase("AQUA") ||
+				color.equalsIgnoreCase("RED") ||
+				color.equalsIgnoreCase("PINK") ||
+				color.equalsIgnoreCase("YELLOW") ||
+				color.equalsIgnoreCase("WHITE") ||
+				
+				color.equalsIgnoreCase("OBFUSCATED") ||
+				color.equalsIgnoreCase("BOLD") ||
+				color.equalsIgnoreCase("STRIKE") ||
+				color.equalsIgnoreCase("UNDERLINE") ||
+				color.equalsIgnoreCase("ITALIC") ||
+				color.equalsIgnoreCase("RESET")){
+			return true;
+		}
+		return false;
+	}
+	
 	public static String getCodeFromString(String string){
-		if(string.equals("BLACK")) return BLACK;
-		if(string.equals("DARKBLUE")) return DARKBLUE;
-		if(string.equals("DARKGREEN")) return DARKGREEN;
-		if(string.equals("DARKAQUA")) return DARKAQUA;
-		if(string.equals("DARKRED")) return DARKRED;
-		if(string.equals("PURPLE")) return PURPLE;
-		if(string.equals("GOLD")) return GOLD;
-		if(string.equals("GRAY")) return GRAY;
-		if(string.equals("DARKGRAY")) return DARKGRAY;
-		if(string.equals("BLUE")) return BLUE;
-		if(string.equals("GREEN")) return GREEN;
-		if(string.equals("AQUA")) return AQUA;
-		if(string.equals("RED")) return RED;
-		if(string.equals("PINK")) return PINK;
-		if(string.equals("YELLOW")) return YELLOW;
-		if(string.equals("WHITE")) return WHITE;
-
-		if(string.equals("OBFUSCATED")) return OBFUSCATED;
-		if(string.equals("BOLD")) return BOLD;
-		if(string.equals("STRIKE")) return STRIKE;
-		if(string.equals("UNDERLINE")) return UNDERLINE;
-		if(string.equals("ITALIC")) return ITALIC;
-		if(string.equals("RESET")) return RESET;
-		return "";
+		String s = "";
+		
+		for(String c : string.split(",")){
+			if(c.equalsIgnoreCase("BLACK")){
+				s += BLACK;
+				continue;
+			}
+			if(c.equalsIgnoreCase("DARKBLUE")){
+				s += DARKBLUE;
+				continue;
+			}
+			if(c.equalsIgnoreCase("DARKGREEN")){
+				s += DARKGREEN;
+				continue;
+			}
+			if(c.equalsIgnoreCase("DARKAQUA")){
+				s += DARKAQUA;
+				continue;
+			}
+			if(c.equalsIgnoreCase("DARKRED")){
+				s += DARKRED;
+				continue;
+			}
+			if(c.equalsIgnoreCase("PURPLE")){
+				s += PURPLE;
+				continue;
+			}
+			if(c.equalsIgnoreCase("GOLD")){
+				s += GOLD;
+				continue;
+			}
+			if(c.equalsIgnoreCase("GRAY")){
+				s += GRAY;
+				continue;
+			}
+			if(c.equalsIgnoreCase("DARKGRAY")){
+				s += DARKGRAY;
+				continue;
+			}
+			if(c.equalsIgnoreCase("BLUE")){
+				s += BLUE;
+				continue;
+			}
+			if(c.equalsIgnoreCase("GREEN")){
+				s += GREEN;
+				continue;
+			}
+			if(c.equalsIgnoreCase("AQUA")){
+				s += AQUA;
+				continue;
+			}
+			if(c.equalsIgnoreCase("RED")){
+				s += RED;
+				continue;
+			}
+			if(c.equalsIgnoreCase("PINK")){
+				s += PINK;
+				continue;
+			}
+			if(c.equalsIgnoreCase("YELLOW")){
+				s += YELLOW;
+				continue;
+			}
+			if(c.equalsIgnoreCase("WHITE")){
+				s += WHITE;
+				continue;
+			}
+			
+			if(c.equalsIgnoreCase("OBFUSCATED")){
+				s += OBFUSCATED;
+				continue;
+			}
+			if(c.equalsIgnoreCase("BOLD")){
+				s += BOLD;
+				continue;
+			}
+			if(c.equalsIgnoreCase("STRIKE")){
+				s += STRIKE;
+				continue;
+			}
+			if(c.equalsIgnoreCase("UNDERLINE")){
+				s += UNDERLINE;
+				continue;
+			}
+			if(c.equalsIgnoreCase("ITALIC")){
+				s += ITALIC;
+				continue;
+			}
+			if(c.equalsIgnoreCase("RESET")){
+				s += RESET;
+				continue;
+			}
+		}
+		return s;
 	}
 	
 	public static String translateTextColors(String toTranslate){

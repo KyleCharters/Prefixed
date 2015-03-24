@@ -24,6 +24,16 @@ public class PrefixedAPI{
 	}
 	
 	/**
+	 * Gets a player's color
+	 * 
+	 * @param player The player's name
+	 * @return The color of supplied player
+	 */
+	public static String getColor(String player){
+		return CustomsHandler.getColor(player);
+	}
+	
+	/**
 	 * Sets a player's prefix
 	 * 
 	 * @param player The player's name
@@ -41,6 +51,18 @@ public class PrefixedAPI{
 	 */
 	public static void setSuffix(String player, String suffix){
 		CustomsHandler.setSuffix(player, suffix);
+	}
+	
+	/**
+	 * Sets a player's color
+	 * 
+	 * @param player The player's name
+	 * @param color The player's new color
+	 */
+	public static void setColor(String player, String color){
+		if(PColor.isValidColor(color)){
+			CustomsHandler.setColor(player, color);
+		}
 	}
 	
 	/**

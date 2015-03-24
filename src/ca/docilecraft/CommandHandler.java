@@ -15,7 +15,6 @@ public class CommandHandler implements CommandExecutor{
 	Prefixed prefixed;
 	
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] arg){
-		System.out.println(arg.length);
 		if(!sender.hasPermission("Prefixed.Admin")){
 			send(sender, "You do not have permission to use this command.");
 			return true;
@@ -70,6 +69,21 @@ public class CommandHandler implements CommandExecutor{
 			send(sender, "Usage: /prefixed suffix <playername>");
 			return true;
 		}
+		if(arg[0].equalsIgnoreCase("color")){
+			if(arg.length == 2){
+				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
+					if(arg[1].equalsIgnoreCase(key)){
+						String color = CustomsHandler.getColor(key);
+						send(sender, key+"'s color: "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
+						return true;
+					}
+				}
+				send(sender, "Unknown player.");
+				return true;
+			}
+			send(sender, "Usage: /prefixed color <playername>");
+			return true;
+		}
 		if(arg[0].equalsIgnoreCase("vault")){
 			if(arg.length == 3 && arg[1].equalsIgnoreCase("prefix")){
 				for(Player player : Bukkit.getOnlinePlayers()){
@@ -108,10 +122,10 @@ public class CommandHandler implements CommandExecutor{
 					}
 				}
 				
-				if(CustomsHandler.setPlayer(arg[2], prefix, null)){
+				if(CustomsHandler.setPlayer(arg[2], prefix, null, null)){
 					send(sender, "User created with prefix "+prefix);
 				}else{
-					send(sender, "No such user in existance");
+					send(sender, "No such user in existence.");
 				}
 				return true;
 			}
@@ -126,14 +140,37 @@ public class CommandHandler implements CommandExecutor{
 					}
 				}
 				
-				if(CustomsHandler.setPlayer(arg[2], null, suffix)){
+				if(CustomsHandler.setPlayer(arg[2], null, suffix, null)){
 					send(sender, "User created with suffix "+suffix);
 				}else{
-					send(sender, "No such user in existance");
+					send(sender, "No such user in existence.");
 				}
 				return true;
 			}
-			send(sender, "Usage: /prefixed set [prefix/suffix] <playername> <newval>");
+			if(arg.length == 4 && arg[1].equalsIgnoreCase("color")){
+				String color = arg[3].toUpperCase();
+				for(String s : color.split(",")){
+					if(!PColor.isValidColor(s)){
+						send(sender, "Not a valid color.");
+						return true;
+					}
+				}
+				
+				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
+					if(arg[2].equalsIgnoreCase(key)){
+						CustomsHandler.setColor(key, color);
+						send(sender, "User "+key+"'s color set to: "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
+						return true;
+					}
+				}
+				
+				if(CustomsHandler.setPlayer(arg[2], null, null, color)){
+					send(sender, "User created with color "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
+				}else{
+					send(sender, "No such user in existence.");
+				}
+			}
+			send(sender, "Usage: /prefixed set [prefix/suffix/color] <playername> <newval>");
 			return true;
 		}
 		
@@ -148,7 +185,8 @@ public class CommandHandler implements CommandExecutor{
 		sender.sendMessage(title+": Prefixed version "+prefixed.getDescription().getVersion());
 		sender.sendMessage(title+": Prefixed Commands:");
 		sender.sendMessage(title+": /prefixed (vault) [prefix/suffix] <playername> : Shows player's prefix/suffix");
-		sender.sendMessage(title+": /prefixed set [prefix/suffix] <playername> <newval> : Sets player's prefix/suffix");
+		sender.sendMessage(title+": /prefixed color <playername> : Shows player's color");
+		sender.sendMessage(title+": /prefixed set [prefix/suffix/color] <playername> <newval> : Sets player's prefix/suffix");
 		sender.sendMessage(title+": /prefixed reload : Reloads plugin");
 		sender.sendMessage(title+": /prefixed help : Shows this menu");
 		sender.sendMessage("-----");
