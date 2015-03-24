@@ -9,126 +9,152 @@ import org.bukkit.util.StringUtil;
 
 public class CommandHandler implements CommandExecutor{
 	public CommandHandler(Prefixed prefixed){
-		main = prefixed;
+		this.prefixed = prefixed;
 	}
 	
-	private String Title = PColor.BLACK+"Pre"+PColor.RED+"fixed"+PColor.WHITE;
+	Prefixed prefixed;
 	
-	Prefixed main;
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] arg){
+		System.out.println(arg.length);
+		if(!sender.hasPermission("Prefixed.Admin")){
+			send(sender, "You do not have permission to use this command.");
+			return true;
+		}
+		if(arg.length == 0){
+			showHelp(sender);
+			return true;
+		}
+		
+		if(arg[0].equalsIgnoreCase("reload")){
+			prefixed.reload();
+			sender.sendMessage("-----");
+			send(sender, "Config reloaded, here are the new nodes:");
+			send(sender, "Multiple Prefixes/Suffixes = "+PrefixedConfig.useMultiple);
+			send(sender, "Use Display Names = "+PrefixedConfig.useDisplayName);
+			send(sender, "Use Custom Tab List Names = "+PrefixedConfig.useTabList);
+			send(sender, "All player customs have been updated");
+			sender.sendMessage("-----");
+			return true;
+		}
+		if(arg[0].equalsIgnoreCase("help")){
+			showHelp(sender);
+			return true;
+		}
+		if(arg[0].equalsIgnoreCase("prefix")){
+			if(arg.length == 2){
+				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
+					if(arg[1].equalsIgnoreCase(key)){
+						String prefix = CustomsHandler.getPrefix(key);
+						send(sender, key+"'s prefix: "+(prefix.contains("&") ? PColor.translateColorCodes(prefix)+" ("+prefix+")" : prefix));
+						return true;
+					}
+				}
+				send(sender, "Unknown player.");
+				return true;
+			}
+			send(sender, "Usage: /prefixed prefix <playername>");
+			return true;
+		}
+		if(arg[0].equalsIgnoreCase("suffix")){
+			if(arg.length == 2){
+				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
+					if(arg[1].equalsIgnoreCase(key)){
+						String suffix = CustomsHandler.getSuffix(key);
+						send(sender, key+"'s suffix: "+(suffix.contains("&") ? PColor.translateColorCodes(suffix)+" ("+suffix+")" : suffix));
+						return true;
+					}
+				}
+				send(sender, "Unknown player.");
+				return true;
+			}
+			send(sender, "Usage: /prefixed suffix <playername>");
+			return true;
+		}
+		if(arg[0].equalsIgnoreCase("vault")){
+			if(arg.length == 3 && arg[1].equalsIgnoreCase("prefix")){
+				for(Player player : Bukkit.getOnlinePlayers()){
+					if(StringUtil.startsWithIgnoreCase(player.getName(), arg[2])){
+						String prefix = VaultManager.chat.getPlayerPrefix(player);
+						send(sender, player.getName()+"'s vault prefix: "+(prefix.contains("&") ? PColor.translateColorCodes(prefix)+PColor.WHITE+" ("+prefix+")" : prefix));
+						return true;
+					}
+				}
+				send(sender, "Player must be online to check vault.");
+				return true;
+			}
+			if(arg.length == 3 && arg[1].equalsIgnoreCase("suffix")){
+				for(Player player : Bukkit.getOnlinePlayers()){
+					if(StringUtil.startsWithIgnoreCase(player.getName(), arg[2])){
+						String suffix = VaultManager.chat.getPlayerSuffix(player);
+						send(sender, player.getName()+"'s vault suffix: "+(suffix.contains("&") ? PColor.translateColorCodes(suffix)+PColor.WHITE+" ("+suffix+")" : suffix));
+						return true;
+					}
+				}
+				send(sender, "Player must be online to check vault.");
+				return true;
+			}
+			send(sender, "Usage: /prefixed vault [prefix/suffix] <playername>");
+			return true;
+		}
+		if(arg[0].equalsIgnoreCase("set")){
+			if(arg.length == 4 && arg[1].equalsIgnoreCase("prefix")){
+				String prefix = PColor.translateTextColors(arg[3]);
+				
+				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
+					if(arg[2].equalsIgnoreCase(key)){
+						CustomsHandler.setPrefix(key, prefix);
+						send(sender, "User "+key+"'s prefix set to: "+prefix);
+						return true;
+					}
+				}
+				
+				if(CustomsHandler.setPlayer(arg[2], prefix, null)){
+					send(sender, "User created with prefix "+prefix);
+				}else{
+					send(sender, "No such user in existance");
+				}
+				return true;
+			}
+			if(arg.length == 4 && arg[1].equalsIgnoreCase("suffix")){
+				String suffix = PColor.translateTextColors(arg[3]);
+				
+				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
+					if(arg[2].equalsIgnoreCase(key)){
+						CustomsHandler.setSuffix(key, suffix);
+						send(sender, "User "+key+"'s suffix set to: "+suffix);
+						return true;
+					}
+				}
+				
+				if(CustomsHandler.setPlayer(arg[2], null, suffix)){
+					send(sender, "User created with suffix "+suffix);
+				}else{
+					send(sender, "No such user in existance");
+				}
+				return true;
+			}
+			send(sender, "Usage: /prefixed set [prefix/suffix] <playername> <newval>");
+			return true;
+		}
+		
+		send(sender, PColor.RED+": Unknown argument.");
+		return true;
+	}
+	
+	String title = PColor.BLACK+"Pre"+PColor.RED+"fixed"+PColor.WHITE+": ";
 	
 	private void showHelp(CommandSender sender){
 		sender.sendMessage("-----");
-		sender.sendMessage(Title+": Prefixed version "+main.getDescription().getVersion());
-		sender.sendMessage(Title+": Prefixed Commands:");
-		sender.sendMessage(Title+": /prefixed (vault)[prefix/suffix] <playername> : Shows the prefix or suffix of a player.");
-		sender.sendMessage(Title+": /prefixed [setprefix/setsuffix] <playername> <newvar> : Sets prefix or suffix of a player.");
-		sender.sendMessage(Title+": /prefixed reload : Reloads plugin.");
-		sender.sendMessage(Title+": /prefixed help : Shows this menu.");
+		sender.sendMessage(title+": Prefixed version "+prefixed.getDescription().getVersion());
+		sender.sendMessage(title+": Prefixed Commands:");
+		sender.sendMessage(title+": /prefixed (vault) [prefix/suffix] <playername> : Shows player's prefix/suffix");
+		sender.sendMessage(title+": /prefixed set [prefix/suffix] <playername> <newval> : Sets player's prefix/suffix");
+		sender.sendMessage(title+": /prefixed reload : Reloads plugin");
+		sender.sendMessage(title+": /prefixed help : Shows this menu");
 		sender.sendMessage("-----");
 	}
 	
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg) {
-		//Check Permission
-		if(sender.hasPermission("Prefixed.Admin")){
-			//Check if command has 1 argument
-			if(arg.length == 1){
-				//Check if argument equals reload
-				if(arg[0].equalsIgnoreCase("reload")){
-					main.reload();
-					sender.sendMessage("-----");
-					sender.sendMessage(Title+": Config reloaded, here are the new nodes:");
-					sender.sendMessage(Title+": Chat format = "+PrefixedConfig.format);
-					sender.sendMessage(Title+": Using multiple prefixes = "+PrefixedConfig.useMultiple);
-					sender.sendMessage(Title+": Using display names = "+PrefixedConfig.useDisplayName);
-					sender.sendMessage(Title+": Using custom Tab list names = "+PrefixedConfig.useTabList);
-					sender.sendMessage(Title+": All player customs have been updated");
-					sender.sendMessage("-----");
-					return true;
-				}else if(arg[0].equalsIgnoreCase("help")){
-					showHelp(sender);
-					return true;
-				}
-			//Check if command h as 2 arguments
-			}else if(arg.length == 2){
-				//Check if argument equals prefix
-				if(arg[0].equalsIgnoreCase("prefix")){
-					for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-						if(arg[1].equalsIgnoreCase(key)){
-							String prefix = CustomsHandler.getPrefix(key);
-							sender.sendMessage(Title+": "+key+"'s prefix: "+(prefix.contains("&") ? PColor.translateColorCodes(prefix)+" ("+prefix+")" : prefix));
-							return true;
-						}
-					}
-				//Check if argument equals suffix
-				}else if(arg[0].equalsIgnoreCase("suffix")){
-					for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-						if(arg[1].equalsIgnoreCase(key)){
-							String suffix = CustomsHandler.getSuffix(key);
-							sender.sendMessage(Title+": "+key+"'s suffix: "+(suffix.contains("&") ? PColor.translateColorCodes(suffix)+" ("+suffix+")" : suffix));
-							return true;
-						}
-					}
-				}else if(arg[0].equalsIgnoreCase("vaultprefix")){
-					for(Player player : Bukkit.getOnlinePlayers()){
-						if(StringUtil.startsWithIgnoreCase(player.getName(), arg[1])){
-							String prefix = VaultManager.chat.getPlayerPrefix(player);
-							sender.sendMessage(Title+": "+player.getName()+"'s vault prefix: "+(prefix.contains("&") ? PColor.translateColorCodes(prefix)+PColor.WHITE+" ("+prefix+")" : prefix));
-							return true;
-						}
-					}
-					sender.sendMessage(Title+": Player must be online to check vault.");
-					return true;
-				}else if(arg[0].equalsIgnoreCase("vaultsuffix")){
-					for(Player player : Bukkit.getOnlinePlayers()){
-						if(StringUtil.startsWithIgnoreCase(player.getName(), arg[1])){
-							String suffix = VaultManager.chat.getPlayerSuffix(player);
-							sender.sendMessage(Title+": "+player.getName()+"'s vault prefix: "+(suffix.contains("&") ? PColor.translateColorCodes(suffix)+PColor.WHITE+" ("+suffix+")" : suffix));
-							return true;
-						}
-					}
-					sender.sendMessage(Title+": Player must be online to check vault.");
-					return true;
-				}
-				
-				sender.sendMessage(Title+PColor.RED+": Unknown player.");
-				return true;
-			}else if(arg.length == 3){
-				if(arg[0].equalsIgnoreCase("setprefix")){
-					for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-						if(arg[1].equalsIgnoreCase(key)){
-							CustomsHandler.setPrefix(key, arg[2]);
-							sender.sendMessage(Title+": User "+key+"'s prefix set to: "+arg[2]);
-							return true;
-						}
-					}
-					if(CustomsHandler.setPlayer(arg[1], arg[2], null))
-						sender.sendMessage(Title+": User created with prefix "+arg[2]);
-					else
-						sender.sendMessage(Title+": No such user in existance");
-					return true;
-				}else if(arg[0].equalsIgnoreCase("setsuffix")){
-					for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-						if(arg[1].equalsIgnoreCase(key)){
-							CustomsHandler.setSuffix(key, arg[2]);
-							sender.sendMessage(Title+": User "+key+"'s suffix set to: "+arg[2]);
-							return true;
-						}
-					}
-					if(CustomsHandler.setPlayer(arg[1], null, arg[2]))
-						sender.sendMessage(Title+": User created with suffix "+arg[2]);
-					else
-						sender.sendMessage(Title+": No such user in existance");
-					return true;
-				}
-			//Check if command has no arguments
-			}else if(arg.length == 0){
-				showHelp(sender);
-				return true;
-			}
-			sender.sendMessage(Title+PColor.RED+": Unknown argument.");
-			return true;
-		}
-		sender.sendMessage(Title+PColor.RED+": You do not have permission to use this command.");
-		return true;
+	private void send(CommandSender sender, String message){
+		sender.sendMessage(title+message);
 	}
 }
