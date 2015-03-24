@@ -85,11 +85,21 @@ public class PrefixedAPI{
 	}
 	
 	public static abstract class PrefixedParameter{
+		/**
+		 * @param name The parameter that activates this use
+		 */
 		public PrefixedParameter(String name){
 			this.name = name;
 		}
 		public String name;
 		
+		/**
+		 * Activated when user sends message
+		 * 
+		 * @param player The player
+		 * @param message The player's message
+		 * @return The text to be placed in the chat
+		 */
 		public abstract String use(Player player, String message);
 	}
 }

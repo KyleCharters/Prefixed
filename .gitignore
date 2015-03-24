@@ -7,3 +7,4 @@ lib
 bin
 svr
 build.xml
+javadoc-build.xml
