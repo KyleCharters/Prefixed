@@ -35,17 +35,17 @@ permissions:
     Prefixed.color.gold:
         description: Tab list name turn gold.
         default: false
-    Prefixed.color.grey:
-        description: Tab list name turn grey.
+    Prefixed.color.gray:
+        description: Tab list name turn gray.
         default: false
-    Prefixed.color.darkgrey:
-        description: Tab list name turn dark grey.
+    Prefixed.color.darkgray:
+        description: Tab list name turn dark gray.
         default: false
     Prefixed.color.blue:
         description: Tab list name turn blue.
         default: false
     Prefixed.color.green:
-        description: Tab list name turn bright green.
+        description: Tab list name turn green.
         default: false
     Prefixed.color.aqua:
         description: Tab list name turn aqua.
