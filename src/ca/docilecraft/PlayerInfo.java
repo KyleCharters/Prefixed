@@ -32,20 +32,20 @@ public class PlayerInfo{
 		if(customPrefix != null){
 			prefix.append(customPrefix+PColor.WHITE);
 			
-			if(PrefixedConfig.useMultiple && VaultManager.enabled){
-				prefix.append(VaultManager.chat.getPlayerPrefix(player)+PColor.WHITE);
+			if(PrefixedConfig.useMultiple && HooksHandler.vaultEnabled){
+				prefix.append(HooksHandler.vault.getPlayerPrefix(player)+PColor.WHITE);
 				
-				for(String group : VaultManager.chat.getPlayerGroups(player)){
-					String groupPre = VaultManager.chat.getGroupPrefix(player.getWorld(), group);
+				for(String group : HooksHandler.vault.getPlayerGroups(player)){
+					String groupPre = HooksHandler.vault.getGroupPrefix(player.getWorld(), group);
 					if(!prefix.toString().contains(groupPre)) prefix.append(groupPre).append(PColor.WHITE);
 				}
 			}
-		}else if(VaultManager.enabled){
-			prefix.append(VaultManager.chat.getPlayerPrefix(player)+PColor.WHITE);
+		}else if(HooksHandler.vaultEnabled){
+			prefix.append(HooksHandler.vault.getPlayerPrefix(player)+PColor.WHITE);
 			
 			if(PrefixedConfig.useMultiple){
-				for(String group : VaultManager.chat.getPlayerGroups(player)){
-					String groupPre = VaultManager.chat.getGroupPrefix(player.getWorld(), group);
+				for(String group : HooksHandler.vault.getPlayerGroups(player)){
+					String groupPre = HooksHandler.vault.getGroupPrefix(player.getWorld(), group);
 					if(!prefix.toString().contains(groupPre)) prefix.append(groupPre).append(PColor.WHITE);
 				}
 			}
@@ -62,20 +62,20 @@ public class PlayerInfo{
 		if(customSuffix != null){
 			suffix.append(customSuffix+PColor.WHITE);
 			
-			if(PrefixedConfig.useMultiple && VaultManager.enabled){
-				suffix.append(VaultManager.chat.getPlayerSuffix(player)+PColor.WHITE);
+			if(PrefixedConfig.useMultiple && HooksHandler.vaultEnabled){
+				suffix.append(HooksHandler.vault.getPlayerSuffix(player)+PColor.WHITE);
 				
-				for(String group : VaultManager.chat.getPlayerGroups(player)){
-					String groupSuf = VaultManager.chat.getGroupSuffix(player.getWorld(), group);
+				for(String group : HooksHandler.vault.getPlayerGroups(player)){
+					String groupSuf = HooksHandler.vault.getGroupSuffix(player.getWorld(), group);
 					if(!suffix.toString().contains(groupSuf)) suffix.append(groupSuf).append(PColor.WHITE);
 				}
 			}
-		}else if(VaultManager.enabled){
-			suffix.append(VaultManager.chat.getPlayerSuffix(player)+PColor.WHITE);
+		}else if(HooksHandler.vaultEnabled){
+			suffix.append(HooksHandler.vault.getPlayerSuffix(player)+PColor.WHITE);
 			
 			if(PrefixedConfig.useMultiple){
-				for(String group : VaultManager.chat.getPlayerGroups(player)){
-					String groupSuf = VaultManager.chat.getGroupSuffix(player.getWorld(), group);
+				for(String group : HooksHandler.vault.getPlayerGroups(player)){
+					String groupSuf = HooksHandler.vault.getGroupSuffix(player.getWorld(), group);
 					if(!suffix.toString().contains(groupSuf)) suffix.append(groupSuf).append(PColor.WHITE);
 				}
 			}

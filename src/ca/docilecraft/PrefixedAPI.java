@@ -28,7 +28,7 @@ public class PrefixedAPI{
 	/**
 	 * Gets a player's prefix
 	 * 
-	 * @param player The player's name
+	 * @param name The player's name
 	 * @return The prefix of supplied player
 	 */
 	public static String getPrefix(String name){
@@ -48,7 +48,7 @@ public class PrefixedAPI{
 	/**
 	 * Gets a player's suffix
 	 * 
-	 * @param player The player's uuid
+	 * @param uuid The player's uuid
 	 * @return The suffix of supplied player
 	 */
 	public static String getSuffix(UUID uuid){
@@ -58,7 +58,7 @@ public class PrefixedAPI{
 	/**
 	 * Gets a player's suffix
 	 * 
-	 * @param player The player's name
+	 * @param name The player's name
 	 * @return The suffix of supplied player
 	 */
 	public static String getSuffix(String name){
@@ -78,7 +78,7 @@ public class PrefixedAPI{
 	/**
 	 * Gets a player's color
 	 * 
-	 * @param player The player's uuid
+	 * @param uuid The player's uuid
 	 * @return The color of supplied player
 	 */
 	public static String getColor(UUID uuid){
@@ -88,7 +88,7 @@ public class PrefixedAPI{
 	/**
 	 * Gets a player's color
 	 * 
-	 * @param player The player's name
+	 * @param name The player's name
 	 * @return The color of supplied player
 	 */
 	public static String getColor(String name){
@@ -108,7 +108,7 @@ public class PrefixedAPI{
 	/**
 	 * Sets a player's prefix
 	 * 
-	 * @param player The player's uuid
+	 * @param uuid The player's uuid
 	 * @param prefix The player's new prefix
 	 */
 	public static void setPrefix(UUID uuid, String prefix){
@@ -118,7 +118,7 @@ public class PrefixedAPI{
 	/**
 	 * Sets a player's prefix
 	 * 
-	 * @param player The player's name
+	 * @param name The player's name
 	 * @param prefix The player's new prefix
 	 */
 	public static void setPrefix(String name, String prefix){
@@ -138,7 +138,7 @@ public class PrefixedAPI{
 	/**
 	 * Sets a player's suffix
 	 * 
-	 * @param player The player's uuid
+	 * @param uuid The player's uuid
 	 * @param suffix The player's new suffix
 	 */
 	public static void setSuffix(UUID uuid, String suffix){
@@ -148,7 +148,7 @@ public class PrefixedAPI{
 	/**
 	 * Sets a player's suffix
 	 * 
-	 * @param player The player's name
+	 * @param name The player's name
 	 * @param suffix The player's new suffix
 	 */
 	public static void setSuffix(String name, String suffix){
@@ -170,7 +170,7 @@ public class PrefixedAPI{
 	/**
 	 * Sets a player's color
 	 * 
-	 * @param player The player's uuid
+	 * @param uuid The player's uuid
 	 * @param color The player's new color
 	 */
 	public static void setColor(UUID uuid, String color){
@@ -182,7 +182,7 @@ public class PrefixedAPI{
 	/**
 	 * Sets a player's color
 	 * 
-	 * @param player The player's name
+	 * @param name The player's name
 	 * @param color The player's new color
 	 */
 	public static void setColor(String name, String color){

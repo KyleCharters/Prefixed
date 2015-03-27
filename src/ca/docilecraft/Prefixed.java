@@ -15,7 +15,7 @@ public class Prefixed extends JavaPlugin {
 	public void onEnable(){
 		//Reporting to metrics
 		try {
-			new Metrics(this).start();
+			new MetricsLite(this).start();
 		} catch (IOException e) {
 			log(1, "Could not connect to Metrics!");
 		}
@@ -33,11 +33,11 @@ public class Prefixed extends JavaPlugin {
 		
 		//Check if vault is running
 		if(PluginM.isPluginEnabled("Vault")){
-			VaultManager.setupChat();
+			HooksHandler.setupHooks();
 		}
 		
 		//Setup Command
-		getCommand("Prefixed").setExecutor(new CommandHandler(this));
+		getCommand("Prefixed").setExecutor(new PrefixedCommand(this));
 		
 		//Log enabled
 		log(0, "Enabled!");

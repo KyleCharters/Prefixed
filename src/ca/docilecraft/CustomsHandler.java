@@ -19,7 +19,7 @@ public class CustomsHandler{
 	 * PLAYER
 	 */
 	
-	protected static UUID playerStartsWithExists(String player){
+	protected static UUID getUUIDStartsWith(String player){
 		for(String key : players.getKeys(false)){
 			String name = players.getConfigurationSection(key).getString("name");
 			if(name != null && StringUtil.startsWithIgnoreCase(name, player) && key.matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}")){
@@ -29,7 +29,7 @@ public class CustomsHandler{
 		return null;
 	}
 	
-	protected static UUID playerExists(String player){
+	protected static UUID getUUID(String player){
 		for(String key : players.getKeys(false)){
 			String name = players.getConfigurationSection(key).getString("name");
 			if(name != null && name.equalsIgnoreCase(player) && key.matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}")){
@@ -39,7 +39,7 @@ public class CustomsHandler{
 		return null;
 	}
 	
-	protected static String playerName(UUID uuid){
+	protected static String getName(UUID uuid){
 		return getPlayer(uuid).getString("name");
 	}
 	
