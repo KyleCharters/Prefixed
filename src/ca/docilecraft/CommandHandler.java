@@ -1,5 +1,7 @@
 package ca.docilecraft;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,12 +43,16 @@ public class CommandHandler implements CommandExecutor{
 		}
 		if(arg[0].equalsIgnoreCase("prefix")){
 			if(arg.length == 2){
-				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-					if(arg[1].equalsIgnoreCase(key)){
-						String prefix = CustomsHandler.getPrefix(key);
-						send(sender, key+"'s prefix: "+(prefix.contains("&") ? PColor.translateColorCodes(prefix)+" ("+prefix+")" : prefix));
+				UUID uuid = CustomsHandler.playerStartsWithExists(arg[1]);
+				if(uuid != null){
+					String name = CustomsHandler.playerName(uuid);
+					String prefix = CustomsHandler.getPrefix(uuid);
+					if(prefix != null){
+						send(sender, name+"'s prefix: "+(prefix.contains("&") ? PColor.translateColorCodes(prefix)+" ("+prefix+")" : prefix));
 						return true;
 					}
+					send(sender, name+" does not have a prefix.");
+					return true;
 				}
 				send(sender, "Unknown player.");
 				return true;
@@ -56,12 +62,16 @@ public class CommandHandler implements CommandExecutor{
 		}
 		if(arg[0].equalsIgnoreCase("suffix")){
 			if(arg.length == 2){
-				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-					if(arg[1].equalsIgnoreCase(key)){
-						String suffix = CustomsHandler.getSuffix(key);
-						send(sender, key+"'s suffix: "+(suffix.contains("&") ? PColor.translateColorCodes(suffix)+" ("+suffix+")" : suffix));
+				UUID uuid = CustomsHandler.playerStartsWithExists(arg[1]);
+				if(uuid != null){
+					String name = CustomsHandler.playerName(uuid);
+					String suffix = CustomsHandler.getSuffix(uuid);
+					if(suffix != null){
+						send(sender, name+"'s suffix: "+(suffix.contains("&") ? PColor.translateColorCodes(suffix)+" ("+suffix+")" : suffix));
 						return true;
 					}
+					send(sender, name+" does not have a suffix.");
+					return true;
 				}
 				send(sender, "Unknown player.");
 				return true;
@@ -71,12 +81,16 @@ public class CommandHandler implements CommandExecutor{
 		}
 		if(arg[0].equalsIgnoreCase("color")){
 			if(arg.length == 2){
-				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-					if(arg[1].equalsIgnoreCase(key)){
-						String color = CustomsHandler.getColor(key);
-						send(sender, key+"'s color: "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
+				UUID uuid = CustomsHandler.playerStartsWithExists(arg[1]);
+				if(uuid != null){
+					String name = CustomsHandler.playerName(uuid);
+					String color = CustomsHandler.getColor(uuid);
+					if(color != null){
+						send(sender, name+"'s color: "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
 						return true;
 					}
+					send(sender, name+" does not have a color.");
+					return true;
 				}
 				send(sender, "Unknown player.");
 				return true;
@@ -113,13 +127,12 @@ public class CommandHandler implements CommandExecutor{
 		if(arg[0].equalsIgnoreCase("set")){
 			if(arg.length == 4 && arg[1].equalsIgnoreCase("prefix")){
 				String prefix = PColor.translateTextColors(arg[3]);
+				UUID uuid = CustomsHandler.playerExists(arg[2]);
 				
-				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-					if(arg[2].equalsIgnoreCase(key)){
-						CustomsHandler.setPrefix(key, prefix);
-						send(sender, "User "+key+"'s prefix set to: "+prefix);
-						return true;
-					}
+				if(uuid != null){
+					CustomsHandler.setPrefix(uuid, prefix);
+					send(sender, "User "+CustomsHandler.playerName(uuid)+"'s prefix set to: "+prefix);
+					return true;
 				}
 				
 				if(CustomsHandler.setPlayer(arg[2], prefix, null, null)){
@@ -131,13 +144,12 @@ public class CommandHandler implements CommandExecutor{
 			}
 			if(arg.length == 4 && arg[1].equalsIgnoreCase("suffix")){
 				String suffix = PColor.translateTextColors(arg[3]);
+				UUID uuid = CustomsHandler.playerExists(arg[2]);
 				
-				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-					if(arg[2].equalsIgnoreCase(key)){
-						CustomsHandler.setSuffix(key, suffix);
-						send(sender, "User "+key+"'s suffix set to: "+suffix);
-						return true;
-					}
+				if(uuid != null){
+					CustomsHandler.setSuffix(uuid, suffix);
+					send(sender, "User "+CustomsHandler.playerName(uuid)+"'s suffix set to: "+suffix);
+					return true;
 				}
 				
 				if(CustomsHandler.setPlayer(arg[2], null, suffix, null)){
@@ -156,12 +168,12 @@ public class CommandHandler implements CommandExecutor{
 					}
 				}
 				
-				for(String key : PrefixedConfig.getPlayers().getKeys(false)){
-					if(arg[2].equalsIgnoreCase(key)){
-						CustomsHandler.setColor(key, color);
-						send(sender, "User "+key+"'s color set to: "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
-						return true;
-					}
+				UUID uuid = CustomsHandler.playerExists(arg[2]);
+				
+				if(uuid != null){
+					CustomsHandler.setColor(uuid, color);
+					send(sender, "User "+CustomsHandler.playerName(uuid)+"'s color set to: "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
+					return true;
 				}
 				
 				if(CustomsHandler.setPlayer(arg[2], null, null, color)){

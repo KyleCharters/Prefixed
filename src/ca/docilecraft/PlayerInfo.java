@@ -10,7 +10,7 @@ public class PlayerInfo{
 	}
 	
 	//Returns player's name [Fit for tab list]
-	protected static String playerNameTag(Player player){
+	public static String playerNameTag(Player player){
 		String chatColor = getChatColor(player);
 		String playerName = getName(player);
 		
@@ -27,10 +27,10 @@ public class PlayerInfo{
 	//Returns player's prefix
 	protected static String getPrefix(Player player){
 		StringBuilder prefix = new StringBuilder();
-		String customPrefix = CustomsHandler.getPrefix(player.getName());
+		String customPrefix = CustomsHandler.getPrefix(player);
 		
-		if(!customPrefix.isEmpty()){
-			prefix.append(CustomsHandler.getPrefix(player.getName())+PColor.WHITE);
+		if(customPrefix != null){
+			prefix.append(customPrefix+PColor.WHITE);
 			
 			if(PrefixedConfig.useMultiple && VaultManager.enabled){
 				prefix.append(VaultManager.chat.getPlayerPrefix(player)+PColor.WHITE);
@@ -57,10 +57,10 @@ public class PlayerInfo{
 	//Returns player's Suffix
 	protected static String getSuffix(Player player){
 		StringBuilder suffix = new StringBuilder();
-		String customsuffix = CustomsHandler.getSuffix(player.getName());
+		String customSuffix = CustomsHandler.getSuffix(player);
 		
-		if(!customsuffix.isEmpty()){
-			suffix.append(CustomsHandler.getSuffix(player.getName())+PColor.WHITE);
+		if(customSuffix != null){
+			suffix.append(customSuffix+PColor.WHITE);
 			
 			if(PrefixedConfig.useMultiple && VaultManager.enabled){
 				suffix.append(VaultManager.chat.getPlayerSuffix(player)+PColor.WHITE);
@@ -87,7 +87,7 @@ public class PlayerInfo{
 	//Returns player's ChatColor
 	protected static String getChatColor(Player player){
 		String c = "";
-		if(CustomsHandler.getColor(player.getName()) != null) c = PColor.getCodeFromString(CustomsHandler.getColor(player.getName()));
+		if(CustomsHandler.getColor(player) != null) c = PColor.getCodeFromString(CustomsHandler.getColor(player));
 		else if(player.hasPermission("Prefixed.color.black"))c = PColor.BLACK;
 		else if(player.hasPermission("Prefixed.color.dblue"))c = PColor.DARKBLUE;
 		else if(player.hasPermission("Prefixed.color.dgreen"))c = PColor.DARKGREEN;

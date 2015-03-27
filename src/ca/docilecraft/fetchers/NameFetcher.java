@@ -15,7 +15,7 @@ public class NameFetcher{
 	private static final String PROFILE_URL_END = "/names";
 	private static final JSONParser jsonParser = new JSONParser();
 
-	public static String getUsernameOf(UUID uuid) throws Exception {
+	public static String getUsernameOf(UUID uuid) throws Exception{
 		HttpURLConnection connection = (HttpURLConnection) new URL(PROFILE_URL+uuid.toString().replace("-", "")+PROFILE_URL_END).openConnection();
 		BufferedInputStream input = new BufferedInputStream(connection.getInputStream());
 		
