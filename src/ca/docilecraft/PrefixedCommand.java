@@ -106,15 +106,12 @@ public class PrefixedCommand implements CommandExecutor{
 		}
 		if(arg[0].equalsIgnoreCase("color")){
 			if(arg.length == 2){
-				UUID uuid = CustomsHandler.getUUIDStartsWith(arg[1]);
-				if(uuid != null){
-					String name = CustomsHandler.getName(uuid);
-					String color = CustomsHandler.getColor(uuid);
-					if(color != null){
-						send(sender, name+"'s color: "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
-						return true;
-					}
-					send(sender, name+" does not have a color.");
+				@SuppressWarnings ("deprecation")
+				Player player = Bukkit.getPlayer(arg[1]);
+				if(player != null){
+					String color = PlayerInfo.getColor(player);
+					String colorName = PColor.toString(color);
+					send(sender, player.getName()+"'s color: "+color+colorName+PColor.RESET+" ("+colorName+")");
 					return true;
 				}
 				send(sender, "Unknown player.");

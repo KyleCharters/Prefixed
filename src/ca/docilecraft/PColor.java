@@ -56,6 +56,33 @@ public class PColor{
 		return false;
 	}
 	
+	public static String toString(String color){
+		if(color.equalsIgnoreCase(BLACK)) return "Black";
+		if(color.equalsIgnoreCase(DARKBLUE)) return "Dark Blue";
+		if(color.equalsIgnoreCase(DARKGREEN)) return "Dark Green";
+		if(color.equalsIgnoreCase(DARKAQUA)) return "Dark Aqua";
+		if(color.equalsIgnoreCase(DARKRED)) return "Dark Red";
+		if(color.equalsIgnoreCase(PURPLE)) return "Purple";
+		if(color.equalsIgnoreCase(GOLD)) return "Gold";
+		if(color.equalsIgnoreCase(GRAY)) return "Gray";
+		if(color.equalsIgnoreCase(DARKGRAY)) return "Dark Gray";
+		if(color.equalsIgnoreCase(BLUE)) return "Blue";
+		if(color.equalsIgnoreCase(GREEN)) return "Green";
+		if(color.equalsIgnoreCase(AQUA)) return "Aqua";
+		if(color.equalsIgnoreCase(RED)) return "Red";
+		if(color.equalsIgnoreCase(PINK)) return "Pink";
+		if(color.equalsIgnoreCase(YELLOW)) return "Yellow";
+		if(color.equalsIgnoreCase(WHITE)) return "White";
+		
+		if(color.equalsIgnoreCase(OBFUSCATED)) return "Obfuscated";
+		if(color.equalsIgnoreCase(BOLD)) return "Bold";
+		if(color.equalsIgnoreCase(STRIKE)) return "Strike";
+		if(color.equalsIgnoreCase(UNDERLINE)) return "Underline";
+		if(color.equalsIgnoreCase(ITALIC)) return "Italic";
+		if(color.equalsIgnoreCase(RESET)) return "Reset";
+		return null;
+	}
+	
 	public static String getCodeFromString(String string){
 		String s = "";
 		

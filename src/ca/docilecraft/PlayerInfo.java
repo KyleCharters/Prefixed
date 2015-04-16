@@ -87,6 +87,7 @@ public class PlayerInfo{
 	//Returns player's ChatColor
 	protected static String getColor(Player player){
 		String c = "";
+		
 		if(CustomsHandler.getColor(player) != null) c = PColor.getCodeFromString(CustomsHandler.getColor(player));
 		else if(player.hasPermission("Prefixed.color.black"))c = PColor.BLACK;
 		else if(player.hasPermission("Prefixed.color.darkblue"))c = PColor.DARKBLUE;
