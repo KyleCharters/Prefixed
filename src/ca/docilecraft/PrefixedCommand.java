@@ -10,14 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 public class PrefixedCommand implements CommandExecutor{
-	public PrefixedCommand(Prefixed prefixed){
-		this.prefixed = prefixed;
-	}
-	
-	Prefixed prefixed;
+	Prefixed prefixed = Prefixed.instance;
 	
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] arg){
-		if(!sender.hasPermission("Prefixed.Admin")){
+		if(!sender.hasPermission("Prefixed.admin")){
 			send(sender, "You do not have permission to use this command.");
 			return true;
 		}
@@ -33,6 +29,8 @@ public class PrefixedCommand implements CommandExecutor{
 			send(sender, "Multiple Prefixes/Suffixes = "+PrefixedConfig.useMultiple);
 			send(sender, "Use Display Names = "+PrefixedConfig.useDisplayName);
 			send(sender, "Use Custom Tab List Names = "+PrefixedConfig.useTabList);
+			send(sender, "Use Player Mention = "+PrefixedConfig.usePlayerMention);
+			send(sender, "Use Player Mention Sound = "+PrefixedConfig.usePlayerMentionSound);
 			send(sender, "All player customs have been updated");
 			sender.sendMessage("-----");
 			return true;
@@ -43,29 +41,29 @@ public class PrefixedCommand implements CommandExecutor{
 		}
 		if(arg[0].equalsIgnoreCase("colors")){
 			send(sender, "Valid color codes:");
-			sender.sendMessage("&r or &RESET ("+PColor.BOLD+"Ex"+PColor.RESET+"ample)");
-			sender.sendMessage("&o or &ITALIC ("+PColor.ITALIC+"Example"+PColor.RESET+")");
-			sender.sendMessage("&n or &UNDERLINE ("+PColor.UNDERLINE+"Example"+PColor.RESET+")");
-			sender.sendMessage("&m or &STRIKE ("+PColor.STRIKE+"Example"+PColor.RESET+")");
-			sender.sendMessage("&l or &BOLD ("+PColor.BOLD+"Example"+PColor.RESET+")");
-			sender.sendMessage("&k or &OBFUSCATED ("+PColor.OBFUSCATED+"Example"+PColor.RESET+")");
-			sender.sendMessage("");
-			sender.sendMessage(PColor.WHITE+"&f or &WHITE");
-			sender.sendMessage(PColor.YELLOW+"&e or &YELLOW");
-			sender.sendMessage(PColor.PINK+"&d or &PINK");
-			sender.sendMessage(PColor.RED+"&c or &RED");
-			sender.sendMessage(PColor.AQUA+"&b or &AQUA");
-			sender.sendMessage(PColor.GREEN+"&a or &GREEN");
-			sender.sendMessage(PColor.BLUE+"&9 or &BLUE");
-			sender.sendMessage(PColor.DARKGRAY+"&8 or &DARKGRAY");
-			sender.sendMessage(PColor.GRAY+"&7 or &GRAY");
-			sender.sendMessage(PColor.GOLD+"&6 or &DARKGREEN");
-			sender.sendMessage(PColor.PURPLE+"&5 or &PURPLE");
-			sender.sendMessage(PColor.DARKRED+"&4 or &DARKRED");
-			sender.sendMessage(PColor.DARKAQUA+"&3 or &DARKAQUA");
-			sender.sendMessage(PColor.DARKGREEN+"&2 or &DARKGREEN");
-			sender.sendMessage(PColor.DARKBLUE+"&1 or &DARKBLUE");
-			sender.sendMessage(PColor.BLACK+"&0 or &BLACK");
+			senda(sender, "&r or &RESET ("+PColor.BOLD+"Ex"+PColor.RESET+"ample)");
+			senda(sender, "&o or &ITALIC ("+PColor.ITALIC+"Example"+PColor.RESET+")");
+			senda(sender, "&n or &UNDERLINE ("+PColor.UNDERLINE+"Example"+PColor.RESET+")");
+			senda(sender, "&m or &STRIKE ("+PColor.STRIKE+"Example"+PColor.RESET+")");
+			senda(sender, "&l or &BOLD ("+PColor.BOLD+"Example"+PColor.RESET+")");
+			senda(sender, "&k or &OBFUSCATED ("+PColor.OBFUSCATED+"Example"+PColor.RESET+")");
+			senda(sender, "");
+			senda(sender, PColor.WHITE+"&f or &WHITE");
+			senda(sender, PColor.YELLOW+"&e or &YELLOW");
+			senda(sender, PColor.PINK+"&d or &PINK");
+			senda(sender, PColor.RED+"&c or &RED");
+			senda(sender, PColor.AQUA+"&b or &AQUA");
+			senda(sender, PColor.GREEN+"&a or &GREEN");
+			senda(sender, PColor.BLUE+"&9 or &BLUE");
+			senda(sender, PColor.DARKGRAY+"&8 or &DARKGRAY");
+			senda(sender, PColor.GRAY+"&7 or &GRAY");
+			senda(sender, PColor.GOLD+"&6 or &DARKGREEN");
+			senda(sender, PColor.PURPLE+"&5 or &PURPLE");
+			senda(sender, PColor.DARKRED+"&4 or &DARKRED");
+			senda(sender, PColor.DARKAQUA+"&3 or &DARKAQUA");
+			senda(sender, PColor.DARKGREEN+"&2 or &DARKGREEN");
+			senda(sender, PColor.DARKBLUE+"&1 or &DARKBLUE");
+			senda(sender, PColor.BLACK+"&0 or &BLACK");
 			return true;
 		}
 		if(arg[0].equalsIgnoreCase("prefix")){
@@ -217,22 +215,26 @@ public class PrefixedCommand implements CommandExecutor{
 		return true;
 	}
 	
-	String title = PColor.BLACK+"Pre"+PColor.RED+"fixed"+PColor.WHITE+": ";
-	
 	private void showHelp(CommandSender sender){
 		sender.sendMessage("-----");
 		send(sender, " Prefixed version "+prefixed.getDescription().getVersion());
 		send(sender, " Prefixed Commands:");
 		send(sender, " /prefixed (vault) [prefix/suffix] <playername> : Shows player's prefix/suffix");
 		send(sender, " /prefixed color <playername> : Shows player's color");
+		send(sender, " /prefixed colors : Shows valid color codes");
 		send(sender, " /prefixed set [prefix/suffix/color] <playername> <newval> : Sets player's prefix/suffix");
 		send(sender, " /prefixed reload : Reloads plugin");
 		send(sender, " /prefixed help : Shows this menu");
-		send(sender, " /prefixed colors : Shows valid color codes");
 		sender.sendMessage("-----");
 	}
 	
+	String title = PColor.BLACK+"Pre"+PColor.RED+"fixed"+PColor.WHITE+": ";
+	
 	private void send(CommandSender sender, String message){
 		sender.sendMessage(title+message);
+	}
+	
+	private void senda(CommandSender sender, String message){
+		sender.sendMessage(message);
 	}
 }

@@ -11,7 +11,7 @@ public class PlayerInfo{
 	
 	//Returns player's name [Fit for tab list]
 	public static String playerNameTag(Player player){
-		String chatColor = getChatColor(player);
+		String chatColor = getColor(player);
 		String playerName = getName(player);
 		
 		if(chatColor.length() > 0){
@@ -85,18 +85,18 @@ public class PlayerInfo{
 	}
 	
 	//Returns player's ChatColor
-	protected static String getChatColor(Player player){
+	protected static String getColor(Player player){
 		String c = "";
 		if(CustomsHandler.getColor(player) != null) c = PColor.getCodeFromString(CustomsHandler.getColor(player));
 		else if(player.hasPermission("Prefixed.color.black"))c = PColor.BLACK;
-		else if(player.hasPermission("Prefixed.color.dblue"))c = PColor.DARKBLUE;
-		else if(player.hasPermission("Prefixed.color.dgreen"))c = PColor.DARKGREEN;
-		else if(player.hasPermission("Prefixed.color.daqua"))c = PColor.DARKAQUA;
-		else if(player.hasPermission("Prefixed.color.dred"))c = PColor.DARKRED;
+		else if(player.hasPermission("Prefixed.color.darkblue"))c = PColor.DARKBLUE;
+		else if(player.hasPermission("Prefixed.color.darkgreen"))c = PColor.DARKGREEN;
+		else if(player.hasPermission("Prefixed.color.darkaqua"))c = PColor.DARKAQUA;
+		else if(player.hasPermission("Prefixed.color.darkred"))c = PColor.DARKRED;
 		else if(player.hasPermission("Prefixed.color.purple"))c = PColor.PURPLE;
 		else if(player.hasPermission("Prefixed.color.gold"))c = PColor.GOLD;
-		else if(player.hasPermission("Prefixed.color.grey"))c = PColor.GRAY;
-		else if(player.hasPermission("Prefixed.color.dgrey"))c = PColor.DARKGRAY;
+		else if(player.hasPermission("Prefixed.color.gray"))c = PColor.GRAY;
+		else if(player.hasPermission("Prefixed.color.darkgray"))c = PColor.DARKGRAY;
 		else if(player.hasPermission("Prefixed.color.blue"))c = PColor.BLUE;
 		else if(player.hasPermission("Prefixed.color.green"))c = PColor.GREEN;
 		else if(player.hasPermission("Prefixed.color.aqua"))c = PColor.AQUA;

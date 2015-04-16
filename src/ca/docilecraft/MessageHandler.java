@@ -2,6 +2,8 @@ package ca.docilecraft;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import ca.docilecraft.PrefixedAPI.PrefixedParameter;
@@ -9,51 +11,73 @@ import ca.docilecraft.PrefixedAPI.PrefixedParameter;
 public class MessageHandler{
 	protected static ArrayList<PrefixedParameter> parameters = new ArrayList<PrefixedParameter>();
 	
-	static{
-		loadDefaultParameters();
+	protected static boolean loadParameter(PrefixedParameter parameter){
+		if(PrefixedConfig.format.contains(parameter.name)){
+			return parameters.add(parameter);
+		}
+		return false;
 	}
 	
-	protected static void loadDefaultParameters(){
+	protected static String checkDefaultParameters(Player player, String format){
 		//-Prefix parameter
-		parameters.add(new PrefixedParameter("Prefix"){
-				public String use(Player player, String message){return PlayerInfo.getPrefix(player);}
-			});
+		format = format.replace("-Prefix", PlayerInfo.getPrefix(player));
 		
 		//-Suffix parameter
-		parameters.add(new PrefixedParameter("Suffix"){
-				public String use(Player player, String message){return PlayerInfo.getSuffix(player);}
-			});
+		format = format.replace("-Suffix", PlayerInfo.getSuffix(player));
 		
 		//-Player parameter
-		parameters.add(new PrefixedParameter("Player"){
-				public String use(Player player, String message){return PlayerInfo.getName(player);}
-			});
+		format = format.replace("-Player", PlayerInfo.getName(player));
 		
 		//-World parameter
-		parameters.add(new PrefixedParameter("World"){
-				public String use(Player player, String message){return PlayerInfo.getWorld(player);}
-			});
+		format = format.replace("-World", PlayerInfo.getWorld(player));
 		
 		//-IPAddress parameter
-		parameters.add(new PrefixedParameter("IPAddress"){
-				public String use(Player player, String message){return PlayerInfo.getAddress(player);}
-			});
+		format = format.replace("-IPAddress", PlayerInfo.getAddress(player));
 		
 		//-IPPort parameter
-		parameters.add(new PrefixedParameter("IPPort"){
-				public String use(Player player, String message){return PlayerInfo.getPort(player);}
-			});
+		format = format.replace("-IPPort", PlayerInfo.getPort(player));
+		
+		
+		return format;
 	}
 	
 	protected static String digest(Player player, String message){
-		String s = PrefixedConfig.format;
+		String format = PrefixedConfig.format;
 		
-		for(PrefixedParameter p : parameters){
-			if(s.contains("-"+p.name)){
-				s = s.replace("-"+p.name, p.use(player, message));
+		//Calculate default parameters
+		format = checkDefaultParameters(player, format);
+		
+		//Calculate PrefixedAPI parameters
+		for(PrefixedParameter p : parameters)
+			format = format.replace("-"+p.name, p.use(player, message));
+		
+		//Calculate player mentions
+		message = digestMentions(message);
+		
+		//Replace message and add colors
+		return PColor.translateColorCodes(format).replace("-Message", PColor.WHITE+(player.hasPermission("Prefixed.chatincolor") ? PColor.translateColorCodes(message) : message));
+	}
+	
+	private static String digestMentions(String message){
+		if(PrefixedConfig.usePlayerMention){
+			for(Player player : Bukkit.getOnlinePlayers()){
+				String name = PlayerInfo.getName(player);
+				
+				if(message.toLowerCase().contains(name.toLowerCase())){
+					message = message.replaceAll("(?i)"+name, PColor.GREEN+"@"+name+PColor.RESET);
+					
+					if(PrefixedConfig.usePlayerMentionSound){
+						player.playSound(player.getLocation(), Sound.NOTE_PIANO, 1f, 0.7f);
+						
+						Bukkit.getScheduler().scheduleSyncDelayedTask(Prefixed.instance, new Runnable(){
+							public void run(){
+								player.playSound(player.getLocation(), Sound.NOTE_PIANO, 1f, 1.05f);
+							}
+						}, 3l);
+					}
+				}
 			}
 		}
-		
-		return PColor.translateColorCodes(s).replace("-Message", PColor.WHITE+(player.hasPermission("Prefixed.color") ? PColor.translateColorCodes(message) : message));
+		return message;
 	}
 }

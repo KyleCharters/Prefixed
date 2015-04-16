@@ -11,7 +11,7 @@ permissions:
     Prefixed.admin:
         description: Allows player to reload config, check prefixes and suffixes, and toggle debug.
         default: op
-    Prefixed.color:
+    Prefixed.chatincolor:
         description: Allows talking in color.
         default: op
     Prefixed.color.black:

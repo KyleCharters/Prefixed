@@ -166,113 +166,113 @@ public class PColor{
 				}
 				
 				if(insideAndEquals(toTranslate, i, "BLACK")){
-					n.append("&0");
+					n.append(BLACK);
 					i += 5;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "DARKBLUE")){
-					n.append("&1");
+					n.append(DARKBLUE);
 					i += 8;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "DARKGREEN")){
-					n.append("&2");
+					n.append(DARKGREEN);
 					i += 9;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "DARKAQUA")){
-					n.append("&3");
+					n.append(DARKAQUA);
 					i += 8;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "DARKRED")){
-					n.append("&4");
+					n.append(DARKRED);
 					i += 7;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "PURPLE")){
-					n.append("&5");
+					n.append(PURPLE);
 					i += 6;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "GOLD")){
-					n.append("&6");
+					n.append(GOLD);
 					i += 4;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "GRAY")){
-					n.append("&7");
+					n.append(GRAY);
 					i += 4;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "DARKGRAY")){
-					n.append("&8");
+					n.append(DARKGRAY);
 					i += 8;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "BLUE")){
-					n.append("&9");
+					n.append(BLUE);
 					i += 4;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "GREEN")){
-					n.append("&a");
+					n.append(GREEN);
 					i += 5;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "AQUA")){
-					n.append("&b");
+					n.append(AQUA);
 					i += 4;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "RED")){
-					n.append("&c");
+					n.append(RED);
 					i += 3;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "PINK")){
-					n.append("&d");
+					n.append(PINK);
 					i += 4;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "YELLOW")){
-					n.append("&e");
+					n.append(YELLOW);
 					i += 6;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "WHITE")){
-					n.append("&f");
+					n.append(WHITE);
 					i += 5;
 					continue;
 				}
 
 				if(insideAndEquals(toTranslate, i, "OBFUSCATED")){
-					n.append("&k");
+					n.append(OBFUSCATED);
 					i += 10;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "BOLD")){
-					n.append("&l");
+					n.append(BOLD);
 					i += 4;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "STRIKE")){
-					n.append("&m");
+					n.append(STRIKE);
 					i += 6;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "UNDERLINE")){
-					n.append("&n");
+					n.append(UNDERLINE);
 					i += 9;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "ITALIC")){
-					n.append("&o");
+					n.append(ITALIC);
 					i += 6;
 					continue;
 				}
 				if(insideAndEquals(toTranslate, i, "RESET")){
-					n.append("&r");
+					n.append(RESET);
 					i += 5;
 					continue;
 				}

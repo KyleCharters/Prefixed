@@ -2,3 +2,5 @@ format: '[-World][-Prefix]-Player[-Suffix]: -Message'
 useMultiple: true
 useDisplayName: true
 useTabList: true
+usePlayerMention: true
+usePlayerMentionSound: true

@@ -195,9 +195,10 @@ public class PrefixedAPI{
 	 * Adds a parameter to the Prefixed MessageHandler
 	 * 
 	 * @param parameter The parameter to add
+	 * @return true if the parameter was successfully added
 	 */
-	public static void addParameter(PrefixedParameter parameter){
-		MessageHandler.parameters.add(parameter);
+	public static boolean addParameter(PrefixedParameter parameter){
+		return MessageHandler.loadParameter(parameter);
 	}
 	
 	/**

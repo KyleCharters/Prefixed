@@ -7,44 +7,47 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Prefixed extends JavaPlugin {
-	private PluginManager PluginM = getServer().getPluginManager();
+	protected static Prefixed instance;
+	private PluginManager pluginM = getServer().getPluginManager();
 	
 	/*
 	 * Plugin startup
 	 */
 	public void onEnable(){
-		//Reporting to metrics
-		try {
-			new MetricsLite(this).start();
-		} catch (IOException e) {
-			log(1, "Could not connect to Metrics!");
-		}
-		
-		//Register Events
-		PluginM.registerEvents(new PrefixedListener.ChatListener(), this);
-		if(getConfig().getBoolean("useTabList"))
-			PluginM.registerEvents(new PrefixedListener.TabListener(), this);
+		instance = this;
 		
 		//Setup Config
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-		PrefixedConfig.reload(this);
+		PrefixedConfig.reload();
 		CustomsHandler.checkPlayers();
 		
+		//Register Events
+		pluginM.registerEvents(new PrefixedListener.ChatListener(), this);
+		if(PrefixedConfig.useTabList)
+			pluginM.registerEvents(new PrefixedListener.TabListener(), this);
+		
+		//Setup Command
+		getCommand("Prefixed").setExecutor(new PrefixedCommand());
+		
 		//Check if vault is running
-		if(PluginM.isPluginEnabled("Vault")){
+		if(pluginM.isPluginEnabled("Vault")){
 			HooksHandler.setupHooks();
 		}
 		
-		//Setup Command
-		getCommand("Prefixed").setExecutor(new PrefixedCommand(this));
+		//Reporting to metrics
+		try{
+			new MetricsLite(this).start();
+		}catch(IOException e){
+			log(1, "Could not connect to Metrics!");
+		}
 		
 		//Log enabled
 		log(0, "Enabled!");
 	}
 	
 	public void reload(){
-		PrefixedConfig.reload(this);
+		PrefixedConfig.reload();
 		CustomsHandler.checkPlayers();
 		
 		if(PrefixedConfig.useTabList)

@@ -7,13 +7,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class PrefixedConfig{
-	private static Prefixed main;
 	private static FileConfiguration config;
 	
-	protected static void reload(Prefixed prefixed){
-		prefixed.reloadConfig();
-		main = prefixed;
-		config = prefixed.getConfig();
+	protected static void reload(){
+		Prefixed.instance.reloadConfig();
+		config = Prefixed.instance.getConfig();
 		
 		loadConfig();
 		reloadPlayers();
@@ -27,12 +25,16 @@ public class PrefixedConfig{
 	protected static boolean useMultiple;
 	protected static boolean useDisplayName;
 	protected static boolean useTabList;
+	protected static boolean usePlayerMention;
+	protected static boolean usePlayerMentionSound;
 	
 	protected static void loadConfig(){
 		format = config.getString("format");
 		useMultiple = config.getBoolean("useMultiple");
 		useDisplayName = config.getBoolean("useDisplayName");
 		useTabList = config.getBoolean("useTabList");
+		usePlayerMention = config.getBoolean("usePlayerMention");
+		usePlayerMentionSound = config.getBoolean("usePlayerMentionSound");
 	}
 	
 	protected static void saveConfig(){
@@ -40,7 +42,9 @@ public class PrefixedConfig{
 		config.set("useMultiple", useMultiple);
 		config.set("useDisplayName", useDisplayName);
 		config.set("useTabList", useTabList);
-		main.saveConfig();
+		config.set("usePlayerMention", usePlayerMention);
+		config.set("usePlayerMentionSound", usePlayerMentionSound);
+		Prefixed.instance.saveConfig();
 	}
 	
 	/*
@@ -53,7 +57,7 @@ public class PrefixedConfig{
 	protected static void reloadPlayers(){
 		//Creating file if it is null
 		if(playersFile == null){
-			playersFile = new File(main.getDataFolder(), "players.yml");
+			playersFile = new File(Prefixed.instance.getDataFolder(), "players.yml");
 			try{
 				playersFile.createNewFile();
 			}catch(IOException e){
