@@ -1,5 +1,28 @@
 package ca.docilecraft;
 
+import static ca.docilecraft.color.PColor.AQUA;
+import static ca.docilecraft.color.PColor.BLACK;
+import static ca.docilecraft.color.PColor.BLUE;
+import static ca.docilecraft.color.PColor.BOLD;
+import static ca.docilecraft.color.PColor.DARKAQUA;
+import static ca.docilecraft.color.PColor.DARKBLUE;
+import static ca.docilecraft.color.PColor.DARKGRAY;
+import static ca.docilecraft.color.PColor.DARKGREEN;
+import static ca.docilecraft.color.PColor.DARKRED;
+import static ca.docilecraft.color.PColor.GOLD;
+import static ca.docilecraft.color.PColor.GRAY;
+import static ca.docilecraft.color.PColor.GREEN;
+import static ca.docilecraft.color.PColor.ITALIC;
+import static ca.docilecraft.color.PColor.OBFUSCATED;
+import static ca.docilecraft.color.PColor.PINK;
+import static ca.docilecraft.color.PColor.PURPLE;
+import static ca.docilecraft.color.PColor.RED;
+import static ca.docilecraft.color.PColor.RESET;
+import static ca.docilecraft.color.PColor.STRIKE;
+import static ca.docilecraft.color.PColor.UNDERLINE;
+import static ca.docilecraft.color.PColor.WHITE;
+import static ca.docilecraft.color.PColor.YELLOW;
+
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -8,6 +31,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+
+import ca.docilecraft.color.PColor;
+import ca.docilecraft.color.PColorBuilder;
 
 public class PrefixedCommand implements CommandExecutor{
 	Prefixed prefixed = Prefixed.instance;
@@ -24,6 +50,7 @@ public class PrefixedCommand implements CommandExecutor{
 		
 		if(arg[0].equalsIgnoreCase("reload")){
 			prefixed.reload();
+			PrefixedListener.TabListener.reloadTabList();
 			sender.sendMessage("-----");
 			send(sender, "Config reloaded, here are the new nodes:");
 			send(sender, "Multiple Prefixes/Suffixes = "+PrefixedConfig.useMultiple);
@@ -41,29 +68,29 @@ public class PrefixedCommand implements CommandExecutor{
 		}
 		if(arg[0].equalsIgnoreCase("colors")){
 			send(sender, "Valid color codes:");
-			senda(sender, "&r or &RESET ("+PColor.BOLD+"Ex"+PColor.RESET+"ample)");
-			senda(sender, "&o or &ITALIC ("+PColor.ITALIC+"Example"+PColor.RESET+")");
-			senda(sender, "&n or &UNDERLINE ("+PColor.UNDERLINE+"Example"+PColor.RESET+")");
-			senda(sender, "&m or &STRIKE ("+PColor.STRIKE+"Example"+PColor.RESET+")");
-			senda(sender, "&l or &BOLD ("+PColor.BOLD+"Example"+PColor.RESET+")");
-			senda(sender, "&k or &OBFUSCATED ("+PColor.OBFUSCATED+"Example"+PColor.RESET+")");
+			senda(sender, "&r or &RESET ("+BOLD+"Ex"+RESET+"ample)");
+			senda(sender, "&o or &ITALIC ("+ITALIC+"Example"+RESET+")");
+			senda(sender, "&n or &UNDERLINE ("+UNDERLINE+"Example"+RESET+")");
+			senda(sender, "&m or &STRIKE ("+STRIKE+"Example"+RESET+")");
+			senda(sender, "&l or &BOLD ("+BOLD+"Example"+RESET+")");
+			senda(sender, "&k or &OBFUSCATED ("+OBFUSCATED+"Example"+RESET+")");
 			senda(sender, "");
-			senda(sender, PColor.WHITE+"&f or &WHITE");
-			senda(sender, PColor.YELLOW+"&e or &YELLOW");
-			senda(sender, PColor.PINK+"&d or &PINK");
-			senda(sender, PColor.RED+"&c or &RED");
-			senda(sender, PColor.AQUA+"&b or &AQUA");
-			senda(sender, PColor.GREEN+"&a or &GREEN");
-			senda(sender, PColor.BLUE+"&9 or &BLUE");
-			senda(sender, PColor.DARKGRAY+"&8 or &DARKGRAY");
-			senda(sender, PColor.GRAY+"&7 or &GRAY");
-			senda(sender, PColor.GOLD+"&6 or &DARKGREEN");
-			senda(sender, PColor.PURPLE+"&5 or &PURPLE");
-			senda(sender, PColor.DARKRED+"&4 or &DARKRED");
-			senda(sender, PColor.DARKAQUA+"&3 or &DARKAQUA");
-			senda(sender, PColor.DARKGREEN+"&2 or &DARKGREEN");
-			senda(sender, PColor.DARKBLUE+"&1 or &DARKBLUE");
-			senda(sender, PColor.BLACK+"&0 or &BLACK");
+			senda(sender, WHITE+"&f or &WHITE");
+			senda(sender, YELLOW+"&e or &YELLOW");
+			senda(sender, PINK+"&d or &PINK");
+			senda(sender, RED+"&c or &RED");
+			senda(sender, AQUA+"&b or &AQUA");
+			senda(sender, GREEN+"&a or &GREEN");
+			senda(sender, BLUE+"&9 or &BLUE");
+			senda(sender, DARKGRAY+"&8 or &DARKGRAY");
+			senda(sender, GRAY+"&7 or &GRAY");
+			senda(sender, GOLD+"&6 or &DARKGREEN");
+			senda(sender, PURPLE+"&5 or &PURPLE");
+			senda(sender, DARKRED+"&4 or &DARKRED");
+			senda(sender, DARKAQUA+"&3 or &DARKAQUA");
+			senda(sender, DARKGREEN+"&2 or &DARKGREEN");
+			senda(sender, DARKBLUE+"&1 or &DARKBLUE");
+			senda(sender, BLACK+"&0 or &BLACK");
 			return true;
 		}
 		if(arg[0].equalsIgnoreCase("prefix")){
@@ -110,8 +137,9 @@ public class PrefixedCommand implements CommandExecutor{
 				Player player = Bukkit.getPlayer(arg[1]);
 				if(player != null){
 					String color = PlayerInfo.getColor(player);
-					String colorName = PColor.toString(color);
-					send(sender, player.getName()+"'s color: "+color+colorName+PColor.RESET+" ("+colorName+")");
+					String names = PColor.getStringFromCodes(color);
+					
+					send(sender, player.getName()+"'s color: "+color+names+RESET+" ("+names+")");
 					return true;
 				}
 				send(sender, "Unknown player.");
@@ -182,24 +210,22 @@ public class PrefixedCommand implements CommandExecutor{
 				return true;
 			}
 			if(arg.length == 4 && arg[1].equalsIgnoreCase("color")){
-				String color = arg[3].toUpperCase();
-				for(String s : color.split(",")){
-					if(!PColor.isValidColor(s)){
-						send(sender, "Not a valid color.");
-						return true;
-					}
+				PColorBuilder pcolorbuilder = PColor.getCodesFromString(arg[3]);
+				if(pcolorbuilder.isEmpty()){
+					send(sender, "Not a valid color.");
+					return true;
 				}
+				String color = pcolorbuilder.getNames();
 				
 				UUID uuid = CustomsHandler.getUUID(arg[2]);
-				
 				if(uuid != null){
 					CustomsHandler.setColor(uuid, color);
-					send(sender, "User "+CustomsHandler.getName(uuid)+"'s color set to: "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
+					send(sender, "User "+CustomsHandler.getName(uuid)+"'s color set to: "+pcolorbuilder+color+RESET+" ("+color+")");
 					return true;
 				}
 				
 				if(CustomsHandler.setPlayer(arg[2], null, null, color)){
-					send(sender, "User created with color "+PColor.getCodeFromString(color)+color+PColor.RESET+" ("+color+")");
+					send(sender, "User created with color "+PColor.getCodesFromString(color)+color+RESET+" ("+color+")");
 				}else{
 					send(sender, "No such user in existence.");
 				}
@@ -208,7 +234,7 @@ public class PrefixedCommand implements CommandExecutor{
 			return true;
 		}
 		
-		send(sender, PColor.RED+": Unknown argument.");
+		send(sender, RED+": Unknown argument.");
 		return true;
 	}
 	
@@ -225,7 +251,7 @@ public class PrefixedCommand implements CommandExecutor{
 		sender.sendMessage("-----");
 	}
 	
-	String title = PColor.BLACK+"Pre"+PColor.RED+"fixed"+PColor.WHITE+": ";
+	String title = BLACK+"Pre"+RED+"fixed"+WHITE+": ";
 	
 	private void send(CommandSender sender, String message){
 		sender.sendMessage(title+message);

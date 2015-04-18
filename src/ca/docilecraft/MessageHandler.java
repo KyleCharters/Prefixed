@@ -1,5 +1,9 @@
 package ca.docilecraft;
 
+import static ca.docilecraft.color.PColor.GREEN;
+import static ca.docilecraft.color.PColor.RESET;
+import static ca.docilecraft.color.PColor.translateColorCodes;
+
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
@@ -55,7 +59,7 @@ public class MessageHandler{
 		message = digestMentions(message);
 		
 		//Replace message and add colors
-		return PColor.translateColorCodes(format).replace("-Message", PColor.WHITE+(player.hasPermission("Prefixed.chatincolor") ? PColor.translateColorCodes(message) : message));
+		return translateColorCodes(format).replace("-Message", RESET+(player.hasPermission("Prefixed.chatincolor") ? translateColorCodes(message) : message));
 	}
 	
 	private static String digestMentions(String message){
@@ -64,7 +68,7 @@ public class MessageHandler{
 				String name = PlayerInfo.getName(player);
 				
 				if(message.toLowerCase().contains(name.toLowerCase())){
-					message = message.replaceAll("(?i)"+name, PColor.GREEN+"@"+name+PColor.RESET);
+					message = message.replaceAll("(?i)"+name, GREEN+"@"+name+RESET);
 					
 					if(PrefixedConfig.usePlayerMentionSound){
 						player.playSound(player.getLocation(), Sound.NOTE_PIANO, 1f, 0.7f);

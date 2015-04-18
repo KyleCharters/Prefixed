@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
+import ca.docilecraft.color.PColor;
+
 public class PrefixedAPI{
 	/**
 	 * Gets a player's prefix

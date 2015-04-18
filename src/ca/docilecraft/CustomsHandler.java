@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import ca.docilecraft.color.PColor;
 import ca.docilecraft.fetchers.NameFetcher;
 import ca.docilecraft.fetchers.UUIDFetcher;
 
@@ -164,7 +165,7 @@ public class CustomsHandler{
 	private static ConfigurationSection getPlayer(String name){
 		for(String key : players.getKeys(false)){
 			ConfigurationSection section = players.getConfigurationSection(key);
-			if(section.contains(name) && section.getString("name").equalsIgnoreCase(name)){
+			if(section.contains("name") && section.getString("name").equalsIgnoreCase(name)){
 				Prefixed.log(3, "Player found");
 				return section;
 			}
