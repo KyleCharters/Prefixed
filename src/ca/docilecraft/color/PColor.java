@@ -1,45 +1,44 @@
 package ca.docilecraft.color;
 
-
-
 public enum PColor{
-	BLACK("0", "BLACK"),
-	DARKBLUE("1", "DARKBLUE"),
-	DARKGREEN("2", "DARKGREEN"),
-	DARKAQUA("3", "DARKAQUA"),
-	DARKRED("4", "DARKRED"),
-	PURPLE("5", "PURPLE"),
-	GOLD("6", "GOLD"),
-	GRAY("7", "GRAY"),
-	DARKGRAY("8", "DARKGRAY"),
-	BLUE("9", "BLUE"),
-	GREEN("a", "GREEN"),
-	AQUA("b", "AQUA"),
-	RED("c", "RED"),
-	PINK("d", "PINK"),
-	YELLOW("e", "YELLOW"),
-	WHITE("f", "WHITE"),
+	BLACK('0', "BLACK"),
+	DARKBLUE('1', "DARKBLUE"),
+	DARKGREEN('2', "DARKGREEN"),
+	DARKAQUA('3', "DARKAQUA"),
+	DARKRED('4', "DARKRED"),
+	PURPLE('5', "PURPLE"),
+	GOLD('6', "GOLD"),
+	GRAY('7', "GRAY"),
+	DARKGRAY('8', "DARKGRAY"),
+	BLUE('9', "BLUE"),
+	GREEN('a', "GREEN"),
+	AQUA('b', "AQUA"),
+	RED('c', "RED"),
+	PINK('d', "PINK"),
+	YELLOW('e', "YELLOW"),
+	WHITE('f', "WHITE"),
 	
-	OBFUSCATED("k", "OBFUSCATED"),
-	BOLD("l", "BOLD"),
-	STRIKE("m", "STRIKE"),
-	UNDERLINE("n", "UNDERLINE"),
-	ITALIC("o", "ITALIC"),
-	RESET("r", "RESET");
+	OBFUSCATED('k', "OBFUSCATED"),
+	BOLD('l', "BOLD"),
+	STRIKE('m', "STRIKE"),
+	UNDERLINE('n', "UNDERLINE"),
+	ITALIC('o', "ITALIC"),
+	RESET('r', "RESET");
 	
-	private PColor(String code, String name){
+	private PColor(Character code, String name){
 		this.code = code;
 		this.name = name;
 	}
 
-	private String code;
+	private Character code;
 	private String name;
 	
+	@Override
 	public String toString(){
-		return "ง"+code;
+		return "ยง"+code;
 	}
 	
-	public String toCode(){
+	public char toCode(){
 		return code;
 	}
 	
@@ -55,57 +54,28 @@ public enum PColor{
 	 * STATIC METHODS
 	 */
 	
-	public static boolean isValidColor(String color){
-		for(PColor pcolor : PColor.values())
-			if(color.equalsIgnoreCase(pcolor.toName()))
-				return true;
+	public static boolean isValidColor(String string){
+		for(String color : string.split(","))
+			for(PColor pcolor : PColor.values())
+				if(color.equalsIgnoreCase(pcolor.toName()))
+					return true;
 		return false;
 	}
 	
-	public static PColorBuilder getCodesFromString(String string){
-		PColorBuilder pcolorbuilder = new PColorBuilder();
-		
-		COLORS: for(String split : string.split(",")){
-			for(PColor pcolor : PColor.values()){
-				if(split.equalsIgnoreCase(pcolor.toName())){
-					pcolorbuilder.append(pcolor);
-					continue COLORS;
-				}
-			}
-		}
-		
-		return pcolorbuilder;
-	}
-	
-	public static String getStringFromCodes(String string){
-		PColorBuilder pcolorbuilder = new PColorBuilder();
-		
-		COLORS: for(String split : string.split("ง")){
-			for(PColor pcolor : PColor.values()){
-				if(split.equalsIgnoreCase(pcolor.toCode())){
-					pcolorbuilder.append(pcolor);
-					continue COLORS;
-				}
-			}
-		}
-		
-		return pcolorbuilder.getNames();
-	}
-	
-	public static String translateTextColors(String toTranslate){
-		char[] text = toTranslate.toCharArray();
+	public static String translateColorsToNames(String string){
+		char[] text = string.toCharArray();
 		StringBuilder builder = new StringBuilder();
 		
 		CHARACTER: for(int i = 0 ; i < text.length ; i++){
-			if((text[i] == '&')){
-				if((i != 0) && (text[i-1] == '\\')){
+			if(text[i] == '&'){
+				if(isCanceled(string, i)){
 					builder.deleteCharAt(builder.length()-1);
 					builder.append('&');
 					continue;
 				}
 				
 				for(PColor pcolor : PColor.values()){
-					if(insideAndEquals(toTranslate, i, pcolor.toCode())){
+					if(nextEquals(string, i, pcolor.toCode())){
 						i = appendColor(i, builder, pcolor);
 						continue CHARACTER;
 					}
@@ -117,25 +87,27 @@ public enum PColor{
 		return builder.toString();
 	}
 	
-	public static String translateColorCodes(String toTranslate){
-		char[] text = toTranslate.toCharArray();
+	public static String translateColors(String string){
+		char[] text = string.toCharArray();
 		StringBuilder builder = new StringBuilder();
 		
 		CHARACTER: for(int i = 0 ; i < text.length ; i++){
-			if((text[i] == '&')){
-				if((i != 0) && (text[i-1] == '\\')){
+			if(text[i] == '&'){
+				if(isCanceled(string, i)){
 					builder.deleteCharAt(builder.length()-1);
 					builder.append('&');
 					continue;
 				}
 				
 				for(PColor pcolor : PColor.values()){
-					if(insideAndEquals(toTranslate, i, pcolor.toName())){
+					if(nextEquals(string, i, pcolor.toName())){
 						i = appendColor(i, builder, pcolor);
 						continue CHARACTER;
 					}
-					
-					if(insideAndEquals(toTranslate, i, pcolor.toCode())){
+				}
+				
+				for(PColor pcolor : PColor.values()){
+					if(nextEquals(string, i, pcolor.toCode())){
 						i = appendColorCode(i, builder, pcolor);
 						continue CHARACTER;
 					}
@@ -147,15 +119,27 @@ public enum PColor{
 		return builder.toString();
 	}
 	
-	private static boolean insideAndEquals(String text, int location, String value){
+	/*
+	 * UTILITY
+	 */
+	
+	private static boolean isCanceled(String text, int location){
+		return (location != 0) && (text.charAt(location-1) == '\\');
+	}
+	
+	private static boolean nextEquals(String text, int location, String value){
 		location += 1;
 		if(location+value.length() <= text.length()){
 			if(text.substring(location, location+value.length()).equalsIgnoreCase(value)){
 				return true;
 			}
 		}
-		
 		return false;
+	}
+	
+	private static boolean nextEquals(String text, int location, Character value){
+		location += 1;
+		return (location != text.length() && characterEqualsIgnoreCase(text.charAt(location), value));
 	}
 	
 	private static int appendColor(int index, StringBuilder builder, PColor color){
@@ -166,5 +150,9 @@ public enum PColor{
 	private static int appendColorCode(int index, StringBuilder builder, PColor color){
 		builder.append(color.toString());
 		return index + 1;
+	}
+	
+	private static boolean characterEqualsIgnoreCase(Character a, Character b){
+		return Character.toLowerCase(a) == Character.toLowerCase(b);
 	}
 }

@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import ca.docilecraft.color.PColor;
@@ -12,7 +11,22 @@ import ca.docilecraft.fetchers.NameFetcher;
 import ca.docilecraft.fetchers.UUIDFetcher;
 
 public class CustomsHandler{
+	public enum PlayerOption{
+		PREFIX, SUFFIX, COLOR;
+	}
+	
+	private static String playerOptionToString(PlayerOption option){
+		if(option == PlayerOption.PREFIX) return "prefix";
+		if(option == PlayerOption.SUFFIX) return "suffix";
+		if(option == PlayerOption.COLOR) return "color";
+		return null;
+	}
+	
 	private static FileConfiguration players = PrefixedConfig.getPlayers();
+	
+	protected static void reload(){
+		players = PrefixedConfig.getPlayers();
+	}
 	
 	/*
 	 * PLAYER
@@ -21,7 +35,7 @@ public class CustomsHandler{
 	protected static UUID getUUIDStartsWith(String player){
 		for(String key : players.getKeys(false)){
 			String name = players.getConfigurationSection(key).getString("name");
-			if(name != null && StringUtil.startsWithIgnoreCase(name, player) && key.matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}")){
+			if(name != null && StringUtil.startsWithIgnoreCase(name, player) && key.matches(Prefixed.UUIDRegex)){
 				return UUID.fromString(key);
 			}
 		}
@@ -31,7 +45,7 @@ public class CustomsHandler{
 	protected static UUID getUUID(String player){
 		for(String key : players.getKeys(false)){
 			String name = players.getConfigurationSection(key).getString("name");
-			if(name != null && name.equalsIgnoreCase(player) && key.matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}")){
+			if(name != null && name.equalsIgnoreCase(player) && key.matches(Prefixed.UUIDRegex)){
 				return UUID.fromString(key);
 			}
 		}
@@ -46,113 +60,26 @@ public class CustomsHandler{
 	 * PREFIX
 	 */
 	
-	protected static String getPrefix(Player player){
-		return getPrefix(getPlayer(player.getUniqueId()));
+	protected static String get(UUID uuid, PlayerOption option){
+		ConfigurationSection section = getPlayer(uuid);
+		return section == null ? null : section.getString(playerOptionToString(option));
 	}
 	
-	protected static String getPrefix(UUID uuid){
-		return getPrefix(getPlayer(uuid));
-	}
-	
-	protected static String getPrefix(String name){
-		return getPrefix(getPlayer(name));
-	}
-	
-	private static String getPrefix(ConfigurationSection section){
-		return section == null ? null : section.getString("prefix");
-	}
-	
-	protected static void setPrefix(Player player, String prefix){
-		setPrefix(getPlayer(player.getUniqueId()), prefix);
-	}
-	
-	protected static void setPrefix(UUID uuid, String prefix){
-		setPrefix(getPlayer(uuid), prefix);
-	}
-	
-	protected static void setPrefix(String name, String prefix){
-		setPrefix(getPlayer(name), prefix);
-	}
-	
-	private static void setPrefix(ConfigurationSection section, String prefix){
-		section.set("prefix", prefix);
+	protected static void set(UUID uuid, PlayerOption option, String value){
+		getPlayer(uuid).set(playerOptionToString(option), value);
 		PrefixedConfig.savePlayers();
 	}
 	
-	/*
-	 * SUFFIX
-	 */
-	
-	protected static String getSuffix(Player player){
-		return getSuffix(getPlayer(player.getUniqueId()));
+	protected static String get(String player, PlayerOption option){
+		ConfigurationSection section = getPlayer(player);
+		return section == null ? null : section.getString(playerOptionToString(option));
 	}
 	
-	protected static String getSuffix(UUID uuid){
-		return getSuffix(getPlayer(uuid));
-	}
-	
-	protected static String getSuffix(String player){
-		return getSuffix(getPlayer(player));
-	}
-	
-	private static String getSuffix(ConfigurationSection section){
-		return section == null ? null : section.getString("suffix");
-	}
-	
-	protected static void setSuffix(Player player, String suffix){
-		setSuffix(getPlayer(player.getUniqueId()), suffix);
-	}
-	
-	protected static void setSuffix(UUID uuid, String suffix){
-		setSuffix(getPlayer(uuid), suffix);
-	}
-	
-	protected static void setSuffix(String name, String suffix){
-		setSuffix(getPlayer(name), suffix);
-	}
-	
-	private static void setSuffix(ConfigurationSection section, String suffix){
-		section.set("suffix", suffix);
+	protected static void set(String player, PlayerOption option, String value){
+		getPlayer(player).set(playerOptionToString(option), value);
 		PrefixedConfig.savePlayers();
 	}
 	
-	/*
-	 * COLOR
-	 */
-	
-	protected static String getColor(Player player){
-		return getColor(getPlayer(player.getUniqueId()));
-	}
-	
-	protected static String getColor(UUID uuid){
-		return getColor(getPlayer(uuid));
-	}
-	
-	protected static String getColor(String name){
-		return getColor(getPlayer(name));
-	}
-	
-	private static String getColor(ConfigurationSection section){
-		return section == null ? null : section.getString("color");
-	}
-	
-	protected static void setColor(Player player, String color){
-		setColor(player.getUniqueId(), color);
-	}
-	
-	protected static void setColor(UUID uuid, String color){
-		setColor(getPlayer(uuid), color);
-	}
-	
-	protected static void setColor(String name, String color){
-		setColor(getPlayer(name), color);
-	}
-	
-	private static void setColor(ConfigurationSection section, String color){
-		section.set("color", color.toUpperCase());
-		PrefixedConfig.savePlayers();
-		PrefixedListener.TabListener.reloadTabList();
-	}
 	
 	/*
 	 * UTILITY
@@ -175,16 +102,16 @@ public class CustomsHandler{
 	}
 	
 	protected static boolean setPlayer(String name, String prefix, String suffix, String color){
+		//Find UUID
 		UUID uuid = null;
-		
 		try{
 			uuid = UUIDFetcher.getUUIDOf(name);
+			
+			if(uuid == null)
+				return false;
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		if(uuid == null)
-			return false;
 		
 		//Create section
 		ConfigurationSection section = players.createSection(uuid.toString());
@@ -207,7 +134,6 @@ public class CustomsHandler{
 		
 		//Save players config
 		PrefixedConfig.savePlayers();
-		
 		return true;
 	}
 	
@@ -226,7 +152,6 @@ public class CustomsHandler{
 		
 		//Delete old section
 		players.set(section.getName(), null);
-		
 		return newSection;
 	}
 	
@@ -270,7 +195,7 @@ public class CustomsHandler{
 		String sectionName = section.getName();
 		String currentName = section.getString("name");
 		
-		if(sectionName.matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}")){
+		if(sectionName.matches(Prefixed.UUIDRegex)){
 			String playerName = NameFetcher.getUsernameOf(UUID.fromString(sectionName));
 			
 			if(currentName == null){

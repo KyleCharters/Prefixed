@@ -11,19 +11,26 @@ public class HooksHandler{
 		setupVault();
 	}
 	
+	/*
+	 * VAULT
+	 */
 	
 	protected static boolean vaultEnabled = false;
-	protected static Chat vault = null;
+	protected static Chat vaultChat = null;
 	
 	private static void setupVault(){
 		RegisteredServiceProvider<Chat> chatProvider = Bukkit.getServer().getServicesManager().getRegistration(Chat.class);
 		if (chatProvider != null){
-			vault = chatProvider.getProvider();
+			vaultChat = chatProvider.getProvider();
 			vaultEnabled = true;
 			
 			Prefixed.log(0, "Sucessfully Hooked Into Vault!");
 		}
 	}
+	
+	/*
+	 * ESSENTIALS
+	 */
 	
 	protected static boolean essentialsEnabled = false;
 	

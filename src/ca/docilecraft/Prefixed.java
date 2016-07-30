@@ -6,13 +6,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Prefixed extends JavaPlugin {
+public class Prefixed extends JavaPlugin{
 	protected static Prefixed instance;
+	protected static String UUIDRegex = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}";
 	private PluginManager pluginM = getServer().getPluginManager();
 	
 	/*
 	 * Plugin startup
 	 */
+	@Override
 	public void onEnable(){
 		instance = this;
 		
@@ -54,6 +56,7 @@ public class Prefixed extends JavaPlugin {
 			PrefixedListener.TabListener.reloadTabList();
 	}
 	
+	@Override
 	public void onDisable(){
 		log(0, "Disabled!");
 	}

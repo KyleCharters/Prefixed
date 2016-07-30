@@ -2,7 +2,7 @@ package ca.docilecraft.color;
 
 import java.util.ArrayList;
 
-public class PColorBuilder{
+public class PColorCollection{
 	private ArrayList<PColor> colors = new ArrayList<PColor>();
 	
 	public PColor[] getColors(){
@@ -26,6 +26,7 @@ public class PColorBuilder{
 		colors.remove(color);
 	}
 	
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		
@@ -49,4 +50,21 @@ public class PColorBuilder{
 		
 		return builder.toString();
 	}
+	
+	public void loadNames(String names){
+		if(names == null)
+			return;
+		
+		COLORS: for(String split : names.split(",")){
+			for(PColor pcolor : PColor.values()){
+				if(split.equalsIgnoreCase(pcolor.toName()) || split.equalsIgnoreCase(String.valueOf(pcolor.toCode()))){
+					append(pcolor);
+					continue COLORS;
+				}
+			}
+		}
+	}
+	
+	public PColorCollection(String names){loadNames(names);}
+	public PColorCollection(){}
 }

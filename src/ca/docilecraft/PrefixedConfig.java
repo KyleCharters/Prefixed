@@ -65,6 +65,7 @@ public class PrefixedConfig{
 			}
 		}
 		players = YamlConfiguration.loadConfiguration(playersFile);
+		CustomsHandler.reload();
 	}
 	
 	protected static FileConfiguration getPlayers(){

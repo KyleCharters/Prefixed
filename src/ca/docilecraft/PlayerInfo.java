@@ -1,11 +1,34 @@
 package ca.docilecraft;
 
-import static ca.docilecraft.color.PColor.*;
+import static ca.docilecraft.CustomsHandler.PlayerOption.COLOR;
+import static ca.docilecraft.CustomsHandler.PlayerOption.PREFIX;
+import static ca.docilecraft.CustomsHandler.PlayerOption.SUFFIX;
+import static ca.docilecraft.color.PColor.AQUA;
+import static ca.docilecraft.color.PColor.BLACK;
+import static ca.docilecraft.color.PColor.BLUE;
+import static ca.docilecraft.color.PColor.BOLD;
+import static ca.docilecraft.color.PColor.DARKAQUA;
+import static ca.docilecraft.color.PColor.DARKBLUE;
+import static ca.docilecraft.color.PColor.DARKGRAY;
+import static ca.docilecraft.color.PColor.DARKGREEN;
+import static ca.docilecraft.color.PColor.DARKRED;
+import static ca.docilecraft.color.PColor.GOLD;
+import static ca.docilecraft.color.PColor.GRAY;
+import static ca.docilecraft.color.PColor.GREEN;
+import static ca.docilecraft.color.PColor.ITALIC;
+import static ca.docilecraft.color.PColor.OBFUSCATED;
+import static ca.docilecraft.color.PColor.PINK;
+import static ca.docilecraft.color.PColor.PURPLE;
+import static ca.docilecraft.color.PColor.RED;
+import static ca.docilecraft.color.PColor.RESET;
+import static ca.docilecraft.color.PColor.STRIKE;
+import static ca.docilecraft.color.PColor.UNDERLINE;
+import static ca.docilecraft.color.PColor.WHITE;
+import static ca.docilecraft.color.PColor.YELLOW;
 
 import org.bukkit.entity.Player;
 
-import ca.docilecraft.color.PColor;
-import ca.docilecraft.color.PColorBuilder;
+import ca.docilecraft.color.PColorCollection;
 
 public class PlayerInfo{
 	
@@ -20,10 +43,10 @@ public class PlayerInfo{
 		String playerName = getName(player);
 		
 		if(chatColor.length() > 0){
-			if((chatColor + playerName + "§f").length() > 16){
-				return new StringBuilder().append(new StringBuilder().append(chatColor).append(playerName).toString().substring(0, 13)).append("-§f").toString();
+			if((chatColor + playerName + RESET).length() > 16){
+				return new StringBuilder().append(new StringBuilder().append(chatColor).append(playerName).toString().substring(0, 13)).append("Â§f").toString();
 			}else{
-				return new StringBuilder().append(chatColor).append(playerName).append("§f").toString();
+				return new StringBuilder().append(chatColor).append(playerName).append(RESET).toString();
 			}
 		}
 		return playerName;
@@ -32,25 +55,25 @@ public class PlayerInfo{
 	//Returns player's prefix
 	protected static String getPrefix(Player player){
 		StringBuilder prefix = new StringBuilder();
-		String customPrefix = CustomsHandler.getPrefix(player);
+		String customPrefix = CustomsHandler.get(player.getUniqueId(), PREFIX);
 		
 		if(customPrefix != null){
 			prefix.append(customPrefix+WHITE);
 			
 			if(PrefixedConfig.useMultiple && HooksHandler.vaultEnabled){
-				prefix.append(HooksHandler.vault.getPlayerPrefix(player)+WHITE);
+				prefix.append(HooksHandler.vaultChat.getPlayerPrefix(player)+WHITE);
 				
-				for(String group : HooksHandler.vault.getPlayerGroups(player)){
-					String groupPre = HooksHandler.vault.getGroupPrefix(player.getWorld(), group);
+				for(String group : HooksHandler.vaultChat.getPlayerGroups(player)){
+					String groupPre = HooksHandler.vaultChat.getGroupPrefix(player.getWorld(), group);
 					if(!prefix.toString().contains(groupPre)) prefix.append(groupPre).append(WHITE);
 				}
 			}
 		}else if(HooksHandler.vaultEnabled){
-			prefix.append(HooksHandler.vault.getPlayerPrefix(player)+WHITE);
+			prefix.append(HooksHandler.vaultChat.getPlayerPrefix(player)+WHITE);
 			
 			if(PrefixedConfig.useMultiple){
-				for(String group : HooksHandler.vault.getPlayerGroups(player)){
-					String groupPre = HooksHandler.vault.getGroupPrefix(player.getWorld(), group);
+				for(String group : HooksHandler.vaultChat.getPlayerGroups(player)){
+					String groupPre = HooksHandler.vaultChat.getGroupPrefix(player.getWorld(), group);
 					if(!prefix.toString().contains(groupPre)) prefix.append(groupPre).append(WHITE);
 				}
 			}
@@ -62,25 +85,25 @@ public class PlayerInfo{
 	//Returns player's Suffix
 	protected static String getSuffix(Player player){
 		StringBuilder suffix = new StringBuilder();
-		String customSuffix = CustomsHandler.getSuffix(player);
+		String customSuffix = CustomsHandler.get(player.getUniqueId(), SUFFIX);
 		
 		if(customSuffix != null){
 			suffix.append(customSuffix+WHITE);
 			
 			if(PrefixedConfig.useMultiple && HooksHandler.vaultEnabled){
-				suffix.append(HooksHandler.vault.getPlayerSuffix(player)+WHITE);
+				suffix.append(HooksHandler.vaultChat.getPlayerSuffix(player)+WHITE);
 				
-				for(String group : HooksHandler.vault.getPlayerGroups(player)){
-					String groupSuf = HooksHandler.vault.getGroupSuffix(player.getWorld(), group);
+				for(String group : HooksHandler.vaultChat.getPlayerGroups(player)){
+					String groupSuf = HooksHandler.vaultChat.getGroupSuffix(player.getWorld(), group);
 					if(!suffix.toString().contains(groupSuf)) suffix.append(groupSuf).append(WHITE);
 				}
 			}
 		}else if(HooksHandler.vaultEnabled){
-			suffix.append(HooksHandler.vault.getPlayerSuffix(player)+WHITE);
+			suffix.append(HooksHandler.vaultChat.getPlayerSuffix(player)+WHITE);
 			
 			if(PrefixedConfig.useMultiple){
-				for(String group : HooksHandler.vault.getPlayerGroups(player)){
-					String groupSuf = HooksHandler.vault.getGroupSuffix(player.getWorld(), group);
+				for(String group : HooksHandler.vaultChat.getPlayerGroups(player)){
+					String groupSuf = HooksHandler.vaultChat.getGroupSuffix(player.getWorld(), group);
 					if(!suffix.toString().contains(groupSuf)) suffix.append(groupSuf).append(WHITE);
 				}
 			}
@@ -91,9 +114,10 @@ public class PlayerInfo{
 	
 	//Returns player's Color
 	protected static String getColor(Player player){
-		PColorBuilder color = new PColorBuilder();
+		PColorCollection color = new PColorCollection();
 		
-		if(CustomsHandler.getColor(player) != null) color = PColor.getCodesFromString(CustomsHandler.getColor(player));
+		String customColors = CustomsHandler.get(player.getUniqueId(), COLOR);
+		if(customColors != null) color.loadNames(customColors);
 		else if(player.hasPermission("Prefixed.color.black"))color.set(BLACK);
 		else if(player.hasPermission("Prefixed.color.darkblue"))color.set(DARKBLUE);
 		else if(player.hasPermission("Prefixed.color.darkgreen"))color.set(DARKGREEN);

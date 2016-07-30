@@ -2,7 +2,7 @@ package ca.docilecraft;
 
 import static ca.docilecraft.color.PColor.GREEN;
 import static ca.docilecraft.color.PColor.RESET;
-import static ca.docilecraft.color.PColor.translateColorCodes;
+import static ca.docilecraft.color.PColor.translateColors;
 
 import java.util.ArrayList;
 
@@ -59,7 +59,7 @@ public class MessageHandler{
 		message = digestMentions(message);
 		
 		//Replace message and add colors
-		return translateColorCodes(format).replace("-Message", RESET+(player.hasPermission("Prefixed.chatincolor") ? translateColorCodes(message) : message));
+		return translateColors(format).replace("-Message", RESET+(player.hasPermission("Prefixed.chatincolor") ? translateColors(message) : message));
 	}
 	
 	private static String digestMentions(String message){
@@ -74,6 +74,7 @@ public class MessageHandler{
 						player.playSound(player.getLocation(), Sound.NOTE_PIANO, 1f, 0.7f);
 						
 						Bukkit.getScheduler().scheduleSyncDelayedTask(Prefixed.instance, new Runnable(){
+							@Override
 							public void run(){
 								player.playSound(player.getLocation(), Sound.NOTE_PIANO, 1f, 1.05f);
 							}

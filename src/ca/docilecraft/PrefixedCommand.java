@@ -1,5 +1,8 @@
 package ca.docilecraft;
 
+import static ca.docilecraft.CustomsHandler.PlayerOption.COLOR;
+import static ca.docilecraft.CustomsHandler.PlayerOption.PREFIX;
+import static ca.docilecraft.CustomsHandler.PlayerOption.SUFFIX;
 import static ca.docilecraft.color.PColor.AQUA;
 import static ca.docilecraft.color.PColor.BLACK;
 import static ca.docilecraft.color.PColor.BLUE;
@@ -22,6 +25,7 @@ import static ca.docilecraft.color.PColor.STRIKE;
 import static ca.docilecraft.color.PColor.UNDERLINE;
 import static ca.docilecraft.color.PColor.WHITE;
 import static ca.docilecraft.color.PColor.YELLOW;
+import static ca.docilecraft.color.PColor.translateColors;
 
 import java.util.UUID;
 
@@ -32,12 +36,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import ca.docilecraft.color.PColor;
-import ca.docilecraft.color.PColorBuilder;
+import ca.docilecraft.color.PColorCollection;
 
 public class PrefixedCommand implements CommandExecutor{
 	Prefixed prefixed = Prefixed.instance;
 	
+	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] arg){
 		if(!sender.hasPermission("Prefixed.admin")){
 			send(sender, "You do not have permission to use this command.");
@@ -98,9 +102,9 @@ public class PrefixedCommand implements CommandExecutor{
 				UUID uuid = CustomsHandler.getUUIDStartsWith(arg[1]);
 				if(uuid != null){
 					String name = CustomsHandler.getName(uuid);
-					String prefix = CustomsHandler.getPrefix(uuid);
+					String prefix = CustomsHandler.get(uuid, PREFIX);
 					if(prefix != null){
-						send(sender, name+"'s prefix: "+(prefix.contains("&") ? PColor.translateColorCodes(prefix)+" ("+prefix+")" : prefix));
+						send(sender, name+"'s prefix: "+(prefix.contains("&") ? translateColors(prefix)+" ("+prefix+")" : prefix));
 						return true;
 					}
 					send(sender, name+" does not have a prefix.");
@@ -117,9 +121,9 @@ public class PrefixedCommand implements CommandExecutor{
 				UUID uuid = CustomsHandler.getUUIDStartsWith(arg[1]);
 				if(uuid != null){
 					String name = CustomsHandler.getName(uuid);
-					String suffix = CustomsHandler.getSuffix(uuid);
+					String suffix = CustomsHandler.get(uuid, SUFFIX);
 					if(suffix != null){
-						send(sender, name+"'s suffix: "+(suffix.contains("&") ? PColor.translateColorCodes(suffix)+" ("+suffix+")" : suffix));
+						send(sender, name+"'s suffix: "+(suffix.contains("&") ? translateColors(suffix)+" ("+suffix+")" : suffix));
 						return true;
 					}
 					send(sender, name+" does not have a suffix.");
@@ -133,13 +137,17 @@ public class PrefixedCommand implements CommandExecutor{
 		}
 		if(arg[0].equalsIgnoreCase("color")){
 			if(arg.length == 2){
-				@SuppressWarnings ("deprecation")
-				Player player = Bukkit.getPlayer(arg[1]);
-				if(player != null){
-					String color = PlayerInfo.getColor(player);
-					String names = PColor.getStringFromCodes(color);
-					
-					send(sender, player.getName()+"'s color: "+color+names+RESET+" ("+names+")");
+				UUID uuid = CustomsHandler.getUUIDStartsWith(arg[1]);
+				if(uuid != null){
+					String name = CustomsHandler.getName(uuid);
+					PColorCollection color = new PColorCollection(CustomsHandler.get(uuid, COLOR));
+					if(!color.isEmpty()){
+						String names = color.getNames();
+						
+						send(sender, name+"'s color: "+color+names+RESET+" ("+names+")");
+						return true;
+					}
+					send(sender, name+" does not have a color.");
 					return true;
 				}
 				send(sender, "Unknown player.");
@@ -152,8 +160,8 @@ public class PrefixedCommand implements CommandExecutor{
 			if(arg.length == 3 && arg[1].equalsIgnoreCase("prefix")){
 				for(Player player : Bukkit.getOnlinePlayers()){
 					if(StringUtil.startsWithIgnoreCase(player.getName(), arg[2])){
-						String prefix = HooksHandler.vault.getPlayerPrefix(player);
-						send(sender, player.getName()+"'s vault prefix: "+(prefix.contains("&") ? PColor.translateColorCodes(prefix)+PColor.WHITE+" ("+prefix+")" : prefix));
+						String prefix = HooksHandler.vaultChat.getPlayerPrefix(player);
+						send(sender, player.getName()+"'s vault prefix: "+(prefix.contains("&") ? translateColors(prefix)+WHITE+" ("+prefix+")" : prefix));
 						return true;
 					}
 				}
@@ -163,8 +171,8 @@ public class PrefixedCommand implements CommandExecutor{
 			if(arg.length == 3 && arg[1].equalsIgnoreCase("suffix")){
 				for(Player player : Bukkit.getOnlinePlayers()){
 					if(StringUtil.startsWithIgnoreCase(player.getName(), arg[2])){
-						String suffix = HooksHandler.vault.getPlayerSuffix(player);
-						send(sender, player.getName()+"'s vault suffix: "+(suffix.contains("&") ? PColor.translateColorCodes(suffix)+PColor.WHITE+" ("+suffix+")" : suffix));
+						String suffix = HooksHandler.vaultChat.getPlayerSuffix(player);
+						send(sender, player.getName()+"'s vault suffix: "+(suffix.contains("&") ? translateColors(suffix)+WHITE+" ("+suffix+")" : suffix));
 						return true;
 					}
 				}
@@ -176,41 +184,41 @@ public class PrefixedCommand implements CommandExecutor{
 		}
 		if(arg[0].equalsIgnoreCase("set")){
 			if(arg.length == 4 && arg[1].equalsIgnoreCase("prefix")){
-				String prefix = PColor.translateTextColors(arg[3]);
+				String prefix = translateColors(arg[3]);
 				UUID uuid = CustomsHandler.getUUID(arg[2]);
 				
 				if(uuid != null){
-					CustomsHandler.setPrefix(uuid, prefix);
+					CustomsHandler.set(uuid, PREFIX, arg[3]);
 					send(sender, "User "+CustomsHandler.getName(uuid)+"'s prefix set to: "+prefix);
 					return true;
 				}
 				
-				if(CustomsHandler.setPlayer(arg[2], prefix, null, null)){
-					send(sender, "User created with prefix "+prefix);
+				if(CustomsHandler.setPlayer(arg[2], arg[3], null, null)){
+					send(sender, "User "+arg[2]+" created with prefix "+prefix);
 				}else{
 					send(sender, "No such user in existence.");
 				}
 				return true;
 			}
 			if(arg.length == 4 && arg[1].equalsIgnoreCase("suffix")){
-				String suffix = PColor.translateTextColors(arg[3]);
+				String suffix = translateColors(arg[3]);
 				UUID uuid = CustomsHandler.getUUID(arg[2]);
 				
 				if(uuid != null){
-					CustomsHandler.setSuffix(uuid, suffix);
+					CustomsHandler.set(uuid, SUFFIX, arg[3]);
 					send(sender, "User "+CustomsHandler.getName(uuid)+"'s suffix set to: "+suffix);
 					return true;
 				}
 				
-				if(CustomsHandler.setPlayer(arg[2], null, suffix, null)){
-					send(sender, "User created with suffix "+suffix);
+				if(CustomsHandler.setPlayer(arg[2], null, arg[3], null)){
+					send(sender, "User "+arg[2]+" created with suffix "+suffix);
 				}else{
 					send(sender, "No such user in existence.");
 				}
 				return true;
 			}
 			if(arg.length == 4 && arg[1].equalsIgnoreCase("color")){
-				PColorBuilder pcolorbuilder = PColor.getCodesFromString(arg[3]);
+				PColorCollection pcolorbuilder = new PColorCollection(arg[3]);
 				if(pcolorbuilder.isEmpty()){
 					send(sender, "Not a valid color.");
 					return true;
@@ -219,16 +227,18 @@ public class PrefixedCommand implements CommandExecutor{
 				
 				UUID uuid = CustomsHandler.getUUID(arg[2]);
 				if(uuid != null){
-					CustomsHandler.setColor(uuid, color);
+					CustomsHandler.set(uuid, COLOR, color);
 					send(sender, "User "+CustomsHandler.getName(uuid)+"'s color set to: "+pcolorbuilder+color+RESET+" ("+color+")");
+					PrefixedListener.TabListener.reloadTabList();
 					return true;
 				}
 				
 				if(CustomsHandler.setPlayer(arg[2], null, null, color)){
-					send(sender, "User created with color "+PColor.getCodesFromString(color)+color+RESET+" ("+color+")");
+					send(sender, "User "+arg[2]+" created with color "+new PColorCollection(color)+color+RESET+" ("+color+")");
 				}else{
 					send(sender, "No such user in existence.");
 				}
+				return true;
 			}
 			send(sender, "Usage: /prefixed set [prefix/suffix/color] <playername> <newval>");
 			return true;
@@ -241,11 +251,12 @@ public class PrefixedCommand implements CommandExecutor{
 	private void showHelp(CommandSender sender){
 		sender.sendMessage("-----");
 		send(sender, " Prefixed version "+prefixed.getDescription().getVersion());
+		send(sender, " (Optional) [Either] <Variable>");
 		send(sender, " Prefixed Commands:");
 		send(sender, " /prefixed (vault) [prefix/suffix] <playername> : Shows player's prefix/suffix");
 		send(sender, " /prefixed color <playername> : Shows player's color");
 		send(sender, " /prefixed colors : Shows valid color codes");
-		send(sender, " /prefixed set [prefix/suffix/color] <playername> <newval> : Sets player's prefix/suffix");
+		send(sender, " /prefixed set [prefix/suffix/color] <playername> <new> : Sets player's prefix/suffix");
 		send(sender, " /prefixed reload : Reloads plugin");
 		send(sender, " /prefixed help : Shows this menu");
 		sender.sendMessage("-----");

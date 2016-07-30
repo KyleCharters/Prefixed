@@ -21,7 +21,6 @@ public class PrefixedListener{
 	}
 	
 	public static class TabListener implements Listener{
-		
 		@EventHandler(priority = EventPriority.NORMAL)
 		public void onPlayerJoin(PlayerJoinEvent event){
 			event.getPlayer().setPlayerListName(PlayerInfo.playerNameTag(event.getPlayer()));
@@ -31,7 +30,6 @@ public class PrefixedListener{
 		public void onWorldChange(PlayerChangedWorldEvent event){
 			event.getPlayer().setPlayerListName(PlayerInfo.playerNameTag(event.getPlayer()));
 		}
-		
 		
 		public static void reloadTabList(){
 			for(Player player:Bukkit.getOnlinePlayers()){

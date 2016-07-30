@@ -1,6 +1,6 @@
 main: ca.docilecraft.Prefixed
 name: Prefixed
-author: WindX
+author: Juxsn
 website: http://dev.bukkit.org/server-mods/prefixed/
 version: 4.0
 softdepend: [Vault]
