@@ -1,0 +1,76 @@
+main: ca.docilecraft.PrefixedLite
+name: PrefixedLite
+author: WindX
+website: http://dev.bukkit.org/server-mods/prefixed/
+version: 1.0
+softdepend: [Vault]
+commands:
+    PrefixedLite:
+        description: PrefixedLite universal command
+permissions:
+    PrefixedLite.admin:
+        description: Allows player to reload config, check prefixes and suffixes, and toggle debug.
+        default: op
+    PrefixedLite.chatincolor:
+        description: Allows talking in color.
+        default: op
+    PrefixedLite.color.black:
+        description: Tab list name turn black.
+        default: false
+    PrefixedLite.color.darkblue:
+        description: Tab list name turn dark blue.
+        default: false
+    PrefixedLite.color.darkgreen:
+        description: Tab list name turn dark green.
+        default: false
+    PrefixedLite.color.darkaqua:
+        description: Tab list name turn dark aqua.
+        default: false
+    PrefixedLite.color.darkred:
+        description: Tab list name turn dark red.
+        default: false
+    PrefixedLite.color.purple:
+        description: Tab list name turn purple.
+        default: false
+    PrefixedLite.color.gold:
+        description: Tab list name turn gold.
+        default: false
+    PrefixedLite.color.gray:
+        description: Tab list name turn gray.
+        default: false
+    PrefixedLite.color.darkgray:
+        description: Tab list name turn dark gray.
+        default: false
+    PrefixedLite.color.blue:
+        description: Tab list name turn blue.
+        default: false
+    PrefixedLite.color.green:
+        description: Tab list name turn green.
+        default: false
+    PrefixedLite.color.aqua:
+        description: Tab list name turn aqua.
+        default: false
+    PrefixedLite.color.red:
+        description: Tab list name turn red.
+        default: false
+    PrefixedLite.color.pink:
+        description: Tab list name turn pink.
+        default: false
+    PrefixedLite.color.yellow:
+        description: Tab list name turn yellow.
+        default: false
+    PrefixedLite.color.obfuscated:
+        description: Tab list name turn into obfuscated letters.
+        default: false
+    PrefixedLite.color.bold:
+        description: Tab list name turn into bolded letters.
+        default: false
+    PrefixedLite.color.strike:
+        description: Tab list name turn into striked letters.
+        default: false
+    PrefixedLite.color.underline:
+        description: Tab list name turn into underlined letters.
+        default: false
+    PrefixedLite.color.italic:
+        description: Tab list name turn into italicised letters.
+        default: false
